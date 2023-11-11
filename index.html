@@ -3,15 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>FREESCAN</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace; /* Classic hacker font */
+            background-color: #000; /* Black background */
+            color: #FF0000; /* Bright red text */
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            cursor: url('mouse-cursor-transparent-10.jpg'), auto; /* Retro cursor */
+        }
+
+        h1 {
+            color: #FF0000; /* Red for the heading */
+            font-size: 3em;
+            text-shadow: 0 0 10px #FF0000; /* Glowing text effect */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .button {
+            background: #222; /* Dark gray for buttons */
+            color: #FF0000; /* Red text on buttons */
+            padding: 15px 30px;
+            border: 1px solid #FF0000; /* Red border */
+            border-radius: 5px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s, transform 0.3s;
+            text-shadow: 0 0 5px #FF0000; /* Subtle glow on text */
+        }
+
+        .button:hover {
+            background-color: #FF0000; /* Red background on hover */
+            color: #000; /* Black text on hover */
+            transform: scale(1.05); /* Enlarge effect */
+        }
+
+        .button:active {
+            transform: scale(0.95); /* Shrink effect when clicked */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+            }
+
+            /* Adjusting font size for mobile devices */
+            h1 {
+                font-size: 2em;
+            }
+
+            .button {
+                font-size: 1em;
+                padding: 10px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>FREESCAN</h1>
-    <a href="bio/OCR Gateway GCSE Biology Student Book.html">KERBOODLE BIO OCR GATEWAY BOOK TRIPLE HIGHER TEIR</a>
-    <p>
-    </p>
-    <a href="Cem/OCR Gateway GCSE Chemistry Student Book.html">KERBOODLE CHEM OCR GATEWAY BOOK TRIPLE HIGHER TEIR</a>
-    <p></p>
-    <a href="physics/OCR Gateway GCSE Physics Student Book.html">KERBOODLE PHYSICS OCR GATEWAY BOOK TRIPLE HIGHER TEIR</a>
+    <div class="container">
+        <h1>FREESCAN</h1>
+        <button class="button" onclick="window.location.href='bio/OCR Gateway GCSE Biology Student Book.html'">KERBOODLE BIO OCR GATEWAY BOOK</button>
+        <button class="button" onclick="window.location.href='Cem/OCR Gateway GCSE Chemistry Student Book.html'">KERBOODLE CHEM OCR GATEWAY BOOK</button>
+        <button class="button" onclick="window.location.href='physics/OCR Gateway GCSE Physics Student Book.html'">KERBOODLE PHYSICS OCR GATEWAY BOOK</button>
+    </div>
 </body>
 </html>
