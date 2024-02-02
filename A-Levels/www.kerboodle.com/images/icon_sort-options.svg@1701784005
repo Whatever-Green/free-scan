@@ -1,0 +1,24 @@
+<svg id="UI" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #575757;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+    <symbol id="icon_sort-option" data-name="icon_sort-option" viewBox="0 0 20 20">
+      <rect class="cls-1" width="20" height="20"/>
+      <g>
+        <path class="cls-2" d="M13.75,12.18l-3.57,3.57a.25.25,0,0,1-.36,0h0L6.25,12.18"/>
+        <path class="cls-2" d="M6.25,7.82,9.82,4.25a.25.25,0,0,1,.36,0h0l3.57,3.57"/>
+      </g>
+    </symbol>
+  </defs>
+  <use width="20" height="20" xlink:href="#icon_sort-option"/>
+</svg>

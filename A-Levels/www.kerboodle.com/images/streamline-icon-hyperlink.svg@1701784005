@@ -1,0 +1,19 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #333;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.67px;
+      }
+    </style>
+  </defs>
+  <title>streamline-icon-hyperlink</title>
+  <g>
+    <path class="cls-1" d="M14.17,25.83,25.83,14.17"/>
+    <path class="cls-1" d="M15.26,20a5,5,0,0,0-3.8,1.44L9,24A5,5,0,0,0,16,31h0l2.5-2.5A5,5,0,0,0,20,24.74"/>
+    <path class="cls-1" d="M24.74,20a5,5,0,0,0,3.8-1.45L31,16A5,5,0,1,0,24,9l-2.5,2.5A5,5,0,0,0,20,15.26"/>
+  </g>
+</svg>

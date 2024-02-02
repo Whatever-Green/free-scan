@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FREESCAN</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<script>
+    function navigateToPage() {
+        var subject = document.getElementById('subject').value;
+        var tier = document.getElementById('tier').value;
+
+        if (subject && tier) {
+            var url = '';
+            if (subject === 'Chem') {
+                url = tier === 'Triple' ? 'Cem/OCR Gateway GCSE Chemistry Student Book.html' : 'Cem/Chem-combined/OCR Gateway GCSE Chemistry for Combined Sciences.htm';
+            } else if (subject === 'Bio') {
+                url = tier === 'Triple' ? 'bio/OCR Gateway GCSE Biology Student Book.html' : 'bio/bio-combined/BIO-COMBINED.htm';
+            } else if (subject === 'Physics') {
+                url = tier === 'Triple' ? 'physics/OCR Gateway GCSE Physics Student Book.html' : 'physics/physics-combined/OCR Gateway GCSE Physics for Combined Sciences.htm';
+            }
+
+            if (url) {
+                window.location.href = url;
+            }
+        } else {
+            alert("Please select both a subject and a tier.");
+        }
+    }
+</script>
+<body>
+    <div class="container">
+        <a href="index.html"><h1>FREESCAN</h1></a>
+        <h3>GCSE OCR Textbook</h3>
+        <h2>Select Your Tier and Subject</h>
+<div class="dropdown-container">
+        <select id="subject" class="dropdown">
+            <option value="">Select Subject</option>
+            <option value="Chem">Chemistry</option>
+            <option value="Bio">Biology</option>
+            <option value="Physics">Physics</option>
+        </select>
+
+        <select id="tier" class="dropdown">
+            <option value="">Select Tier</option>
+            <option value="Triple">Triple</option>
+            <option value="Combined">Combined</option>
+        </select>
+
+        <button class="button" onclick="navigateToPage()">Submit</button>
+</div>
+    </div>
+    <small>KERBOODLE BACKEND RE-WRITTEN</small>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,107 @@
+body {
+    font-family: 'Courier New', Courier, monospace; /* Maintain the classic hacker font */
+    background-color: #0A192F; /* Updated to a deep navy blue for a modern, less harsh background */
+    color: #64FFDA; /* A bright teal for text, providing a vibrant contrast */
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+    cursor: url('mouse-cursor-transparent-10.jpg'), auto; /* Keep the retro cursor for a touch of nostalgia */
+}
+
+h1 {
+    color: #CCD6F6; /* A softer, modern blue for the heading */
+    font-size: 3em;
+    text-shadow: 0 0 10px #64FFDA; /* Glowing text effect with the new text color */
+}
+
+h2 {
+    color: #8892B0; /* A lighter shade of blue for secondary headings */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.button {
+    background: #112240; /* A darker shade of navy for buttons */
+    color: #64FFDA; /* Maintaining the bright teal for button text */
+    padding: 15px 30px;
+    border: 1px solid #64FFDA; /* Teal border to match the text */
+    border-radius: 5px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: background-color 0.3s, transform 0.3s;
+    text-shadow: 0 0 5px #64FFDA; /* Subtle glow on text */
+}
+
+.button:hover {
+    background-color: #64FFDA; /* Teal background on hover */
+    color: #0A192F; /* Navy text on hover for a complete inversion effect */
+    transform: scale(1.05); /* Enlarge effect */
+}
+
+.button:active {
+    transform: scale(0.95); /* Shrink effect when clicked */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .container {
+        width: 90%;
+    }
+
+    /* Adjusting font size for mobile devices */
+    h1 {
+        font-size: 2em;
+    }
+
+    .button {
+        font-size: 1em;
+        padding: 10px 20px;
+    }
+}
+
+.dropdown {
+    background: #112240; /* Dark navy for dropdowns, matching the button background */
+    color: #64FFDA; /* Teal text for consistency with the overall design */
+    padding: 10px 20px;
+    border: 1px solid #64FFDA; /* Teal border to complement the text */
+    border-radius: 5px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s, transform 0.3s;
+    text-align: left;
+    width: calc(100% - 42px);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    text-shadow: 0 0 5px #64FFDA; /* Adding a subtle glow to the text for emphasis */
+}
+
+.dropdown:hover {
+    background-color: #64FFDA; /* Teal background on hover */
+    color: #0A192F; /* Navy text on hover for contrast */
+}
+
+.dropdown:active {
+    transform: scale(0.95); /* Shrink effect when clicked */
+}
+
+.dropdown::after {
+    content: '\25BC';
+    color: #64FFDA; /* Teal arrow to match the text color */
+    position: absolute;
+    right: 15px;
+    top: calc(50% - 2px);
+    pointer-events: none;
+}
+
+.dropdown-container {
+    position: relative;
+}

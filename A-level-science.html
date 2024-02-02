@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FREESCAN</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+    </style>
+</head>
+<script>
+    function navigateToPage() {
+        var subject = document.getElementById('subject').value;
+        var tier = document.getElementById('tier').value;
+
+        if (subject && tier) {
+            var url = '';
+            if (subject === 'Bio') {
+                url = tier === 'year_1' ? 'A-Levels/Books/A-level Biology A/OCR A Biology.htm' : 'A-Levels/Books/A-Level Biology Year 2/OCR A Biology Year 2.htm';
+            } else if (subject === 'Chem') {
+                url = tier === 'year_1' ? 'A-Levels/Books/A-Level Chemistry A/OCR A Chemistry.htm' : 'A-Levels/Books/A-level Chemistry Year 2/OCR A Chemistry Year 2.htm';
+            } else if (subject === 'Physics') {
+                url = tier === 'year_1' ? 'A-Levels/Books/A-level Physics A/OCR A Physics.htm' : 'A-Levels/Books/A-Level Physics Year 2/OCR A Physics Year 2.htm';
+            }
+
+            if (url) {
+                window.location.href = url;
+            }
+        } else {
+            alert("Please select both a subject and a tier.");
+        }
+    }
+
+</script>
+<body>
+    <div class="container">
+        
+        <a href="index.html"><h1>FREESCAN</h1></a>
+        <h3>A - Levels OCR Textbook</h3>
+        <h2>Select Your Tier and Subject</h2>
+        <small>Not including AS levels as they overlap both Years</small>
+<div class="dropdown-container">
+        <select id="subject" class="dropdown">
+            <option value="">Select Subject</option>
+            <option value="Chem">Chemistry</option>
+            <option value="Bio">Biology</option>
+            <option value="Physics">Physics</option>
+        </select>
+
+        <select id="tier" class="dropdown">
+            <option value="">Select Year</option>
+            <option value="year_1">Year 1 (A)</option>
+            <option value="year_2">Year 2 (B)</option>
+        </select>
+
+        <button class="button" onclick="navigateToPage()">Submit</button>
+</div>
+    </div>
+</body>
+</html>
+
+
+
+

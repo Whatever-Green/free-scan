@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #575757;
+      }
+
+      .cls-2, .cls-3 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #fff;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+    <symbol id="icon_sort-ascending-2" data-name="icon_sort-ascending" viewBox="0 0 20 20">
+      <circle class="cls-1" cx="10" cy="10" r="10"/>
+      <path class="cls-2" d="M6.25,11.82,9.82,8.25a.25.25,0,0,1,.36,0h0l3.57,3.57"/>
+    </symbol>
+  </defs>
+  <g id="UI">
+    <rect class="cls-3" width="20" height="20" transform="translate(20 20) rotate(-180)"/>
+  </g>
+  <g id="Non_Editable_Symbol_Art" data-name="Non Editable Symbol Art">
+    <g id="icon_sort-ascending">
+      <use width="20" height="20" xlink:href="#icon_sort-ascending-2"/>
+    </g>
+  </g>
+</svg>

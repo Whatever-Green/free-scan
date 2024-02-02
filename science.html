@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FREESCAN</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<script>
+    function navigateToPage() {
+        var subject = document.getElementById('subject').value;
+        var tier = document.getElementById('tier').value;
+
+        if (subject && tier) {
+            var url = '';
+            if (subject === 'Chem') {
+                url = tier === 'Triple' ? 'Cem/OCR Gateway GCSE Chemistry Student Book.html' : 'Cem/Chem-combined/OCR Gateway GCSE Chemistry for Combined Sciences.htm';
+            } else if (subject === 'Bio') {
+                url = tier === 'Triple' ? 'bio/OCR Gateway GCSE Biology Student Book.html' : 'bio/bio-combined/BIO-COMBINED.htm';
+            } else if (subject === 'Physics') {
+                url = tier === 'Triple' ? 'physics/OCR Gateway GCSE Physics Student Book.html' : 'physics/physics-combined/OCR Gateway GCSE Physics for Combined Sciences.htm';
+            }
+
+            if (url) {
+                window.location.href = url;
+            }
+        } else {
+            alert("Please select both a subject and a tier.");
+        }
+    }
+</script>
+<body>
+    <div class="container">
+        <a href="index.html"><h1>FREESCAN</h1></a>
+        <h2>GCSE & A - LEVEL</h2>
+        <h3>OCR</h3>
+        <button class="button" onclick="window.location.href='gcse-science.html'">GCSE</button>
+        <button class="button" onclick="window.location.href='A-level-science.html'">A - LEVELs</button>
+    </div>
+</body>
+</html>
+
+
+
+
