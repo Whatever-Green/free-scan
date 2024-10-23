@@ -29,29 +29,44 @@
         if (subject && tier) {
             var url = '';
             if (subject === 'Chem') {
-                url = tier === 'Triple' ? 'Cem/OCR Gateway GCSE Chemistry Student Book.html' : 'Cem/Chem-combined/OCR Gateway GCSE Chemistry for Combined Sciences.htm';
+                url = tier === 'Triple' ? 'maths/Edexcel AS and A level Mathematics.pdf' : 'maths/Maths Year 2 Pure.pdf';
             } else if (subject === 'Bio') {
-                url = tier === 'Triple' ? 'bio/OCR Gateway GCSE Biology Student Book.html' : 'bio/bio-combined/BIO-COMBINED.htm';
+                url = tier === 'Triple' ? 'maths/Maths Year 1 Stats and Mechanics.pdf' : 'maths/Maths Year 2 Stats and Mechanics.pdf';
             } else if (subject === 'Physics') {
-                url = tier === 'Triple' ? 'physics/OCR Gateway GCSE Physics Student Book.html' : 'physics/physics-combined/OCR Gateway GCSE Physics for Combined Sciences.htm';
+                url = tier === 'Triple' ? 'physics/OCR Gateway GCSE Physics Student Book.html' : '#';
             }
 
             if (url) {
                 window.location.href = url;
             }
         } else {
-            alert("Please select both a subject and a tier.");
+            alert("Please select both a Component and Year.");
         }
     }
 </script>
 <body>
     <div class="container">
         <a href="index.html"><h1>FREESCAN</h1></a>
-        <h3>GEOGRAPHY EDEXCEL TEXTBOOK</h3>
-        <button class="button" onclick="window.location.href='maths/Edexcel AS and A level Mathematics.pdf'">Edexcel Year 1/AS level Pure Mathematics (main book series)</button>
-        <button class="button" onclick="window.location.href='maths/Maths Year 1 Stats and Mechanics.pdf'">Edexcel Year 1/AS level Stats & Mechanics Mathematics (main book series)</button>
-        <small>Numbers and stuff</small>
+        <h3>Mathematics Textbooks</h3>
+        <h2>Select Your Component and Year</h>
+<div class="dropdown-container">
+        <select id="subject" class="dropdown">
+            <option value="">Select Component</option>
+            <option value="Chem">Pure Mathematics</option>
+            <option value="Bio">Mechanics and Statistics</option>
+        </select>
+
+        <select id="tier" class="dropdown">
+            <option value="">Select Year</option>
+            <option value="Triple">Year 1/AS</option>
+            <option value="Combined">Year 2</option>
+        </select>
+
+        <button class="button" onclick="navigateToPage()">Submit</button>
+</div>
+<small>We are in the process of compiling the solution bank into a Handy PDF</small>
     </div>
+    <small>Numbers and stuff, gave up when they started using letters</small>
 </body>
 </html>
 
