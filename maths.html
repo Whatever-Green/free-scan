@@ -25,49 +25,79 @@
     function navigateToPage() {
         var subject = document.getElementById('subject').value;
         var tier = document.getElementById('tier').value;
+        var resourceType = document.querySelector('input[name="resource"]:checked').value;
 
-        if (subject && tier) {
+        if (subject && tier && resourceType) {
             var url = '';
-            if (subject === 'Chem') {
-                url = tier === 'Triple' ? 'maths/Edexcel AS and A level Mathematics.pdf' : 'maths/Maths Year 2 Pure.pdf';
-            } else if (subject === 'Bio') {
-                url = tier === 'Triple' ? 'maths/Maths Year 1 Stats and Mechanics.pdf' : 'maths/Maths Year 2 Stats and Mechanics.pdf';
-            } else if (subject === 'Physics') {
-                url = tier === 'Triple' ? 'physics/OCR Gateway GCSE Physics Student Book.html' : '#';
+            if (resourceType === 'Textbook') {
+                // Textbook links
+                if (subject === 'Pure Mathematics') {
+                    url = tier === 'Year 1/AS' ? 'maths/Edexcel AS and A level Mathematics.pdf' : 'maths/Maths Year 2 Pure.pdf';
+                } else if (subject === 'Mechanics and Statistics') {
+                    url = tier === 'Year 1/AS' ? 'maths/Maths Year 1 Stats and Mechanics.pdf' : 'maths/Maths Year 2 Stats and Mechanics.pdf';
+                }
+            } else if (resourceType === 'Solution') {
+                // Solution links
+                if (subject === 'Pure Mathematics') {
+                    url = tier === 'Year 1/AS' ? 'maths/Pure 1 Solution Bank - All .pdf' : 'maths/Pure 2 Solution Bank- All.pdf';
+                } else if (subject === 'Mechanics and Statistics') {
+                    url = tier === 'Year 1/AS' ? 'maths/Stats and Mechnaics 1 Solution Bank - All.pdf' : 'maths/Stats and Mechnaics 2 Solution Bank - All..pdf';
+                }
             }
 
             if (url) {
                 window.location.href = url;
             }
         } else {
-            alert("Please select both a Component and Year.");
+            alert("Please select both a Component, Year, and Resource.");
         }
     }
 </script>
+
 <body>
     <div class="container">
         <a href="index.html"><h1>FREESCAN</h1></a>
-        <h3>Mathematics Textbooks</h3>
-        <h2>Select Your Component and Year</h>
-<div class="dropdown-container">
-        <select id="subject" class="dropdown">
-            <option value="">Select Component</option>
-            <option value="Chem">Pure Mathematics</option>
-            <option value="Bio">Mechanics and Statistics</option>
-        </select>
+        <h3>Mathematics Textbooks and SolutionBank (new!)</h3>
+        <h2>Select Your Component, Year, and Resource Type</h2>
+        <div class="dropdown-container">
+            <select id="subject" class="dropdown">
+                <option value="">Select Component</option>
+                <option value="Pure Mathematics">Pure Mathematics</option>
+                <option value="Mechanics and Statistics">Mechanics and Statistics</option>
+            </select>
 
-        <select id="tier" class="dropdown">
-            <option value="">Select Year</option>
-            <option value="Triple">Year 1/AS</option>
-            <option value="Combined">Year 2</option>
-        </select>
+            <select id="tier" class="dropdown">
+                <option value="">Select Year</option>
+                <option value="Year 1/AS">Year 1/AS</option>
+                <option value="Year 2">Year 2</option>
+            </select>
 
-        <button class="button" onclick="navigateToPage()">Submit</button>
-</div>
-<small>We are in the process of compiling the solution bank into a Handy PDF</small>
+            <div class="resource-type">
+                <label><input type="radio" name="resource" value="Textbook"> Textbook</label>
+                <label><input type="radio" name="resource" value="Solution"> Solution</label>
+            </div>
+
+            <button class="button" onclick="navigateToPage()">Submit</button>
+            
+        </div>
+        <small>Numbers and stuff, gave up once they started using letters</small>
+        <small>This page is in BETA as we are working on introducing some really neat features</small>
+        <details>
+            <summary>Features</summary>
+            <p>- All text Books from Edexcel For the 2 Years</p>
+            <p>- A compiled copy of the Solutions Bank</p>
+            <p>- Handy Dropdowns</p>
+            <p>COMING SOON:</p>
+            <p>- Online PDF viewer with Notation Support</p>
+            <p>- Tooltips that show on screen asking if you want the solution bank answers for that page</p>
+            <p>- Better Reading Experience on Ipads and computers</p>
+            <p>- Better Mobile Support</p>
+
+        </details>
     </div>
-    <small>Numbers and stuff, gave up when they started using letters</small>
+    
 </body>
+
 </html>
 
 
