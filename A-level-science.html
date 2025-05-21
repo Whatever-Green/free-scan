@@ -1,79 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6WM679143B"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6WM679143B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6WM679143B');
+  </script>
 
-  gtag('config', 'G-6WM679143B');
-</script>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FREESCAN</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
-    <link rel="manifest" href="favicon_io/site.webmanifest">
-    <style>
-    </style>
-</head>
-<script>
-    function navigateToPage() {
-        var subject = document.getElementById('subject').value;
-        var tier = document.getElementById('tier').value;
-
-        if (subject && tier) {
-            var url = '';
-            if (subject === 'Bio') {
-                url = tier === 'year_1' ? 'A-Levels/Books/A-level Biology A/OCR A Biology.htm' : 'A-Levels/Books/A-Level Biology Year 2/OCR A Biology Year 2.htm';
-            } else if (subject === 'Chem') {
-                url = tier === 'year_1' ? 'A-Levels/Books/A-Level Chemistry A/OCR A Chemistry.htm' : 'A-Levels/Books/A-level Chemistry Year 2/OCR A Chemistry Year 2.htm';
-            } else if (subject === 'Physics') {
-                url = tier === 'year_1' ? 'A-Levels/Books/A-level Physics A/OCR A Physics.htm' : 'A-Levels/Books/A-Level Physics Year 2/OCR A Physics Year 2.htm';
-            }
-
-            if (url) {
-                window.location.href = url;
-            }
-        } else {
-            alert("Please select both a subject and a tier.");
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Freescan – A-Level OCR</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Lexend Deca', sans-serif;
     }
+  </style>
+</head>
 
-</script>
-<body>
-    <div class="container">
-        
-        <a href="index.html"><h1>FREESCAN</h1></a>
-        <h3>A - Levels OCR Textbook</h3>
-        <h2>Select Your Tier and Subject</h2>
-        <small>Not including AS levels as they overlap both Years</small>
-<div class="dropdown-container">
-        <select id="subject" class="dropdown">
-            <option value="">Select Subject</option>
-            <option value="Chem">Chemistry</option>
-            <option value="Bio">Biology</option>
-            <option value="Physics">Physics</option>
-        </select>
+<body class="bg-white text-black min-h-screen flex flex-col items-center pt-8 px-4">
 
-        <select id="tier" class="dropdown">
-            <option value="">Select Year</option>
-            <option value="year_1">Year 1 (A)</option>
-            <option value="year_2">Year 2 (B)</option>
-        </select>
+  <!-- Logo/Header -->
+  <div class="absolute top-6 left-1/2 transform -translate-x-1/2 text-center">
+    <a href="A-Level.html" class="hover:underline">
+      <h1 class="text-3xl font-bold">Freescan</h1>
+    </a>
+    <p class="text-sm">Free hosting for Textbooks and Resources</p>
+  </div>
 
-        <button class="button" onclick="navigateToPage()">Submit</button>
-</div>
+  <!-- Main Content -->
+  <div class="mt-32 text-center max-w-xl w-full">
+    <h2 class="text-2xl font-semibold mb-2">A-Level OCR Textbooks</h2>
+    <p class="mb-4 text-base">Select Your Tier and Subject</p>
+    <p class="text-sm text-gray-600 mb-6">Not including AS levels as they overlap both Years</p>
+
+    <!-- Dropdowns -->
+    <div class="grid gap-4 mb-6">
+      <select id="subject" class="border border-black rounded-lg px-4 py-2">
+        <option value="">Select Subject</option>
+        <option value="Chem">Chemistry</option>
+        <option value="Bio">Biology</option>
+        <option value="Physics">Physics</option>
+      </select>
+
+      <select id="tier" class="border border-black rounded-lg px-4 py-2">
+        <option value="">Select Year</option>
+        <option value="year_1">Year 1 (A)</option>
+        <option value="year_2">Year 2 (B)</option>
+      </select>
+
+      <!-- Submit Button -->
+      <button onclick="navigateToPage()" class="mt-2 px-6 py-2 border border-black rounded-lg shadow hover:bg-gray-100 transition">Submit</button>
     </div>
+  </div>
+
+  <!-- Navigation Script -->
+  <script>
+    function navigateToPage() {
+      const subject = document.getElementById('subject').value;
+      const tier = document.getElementById('tier').value;
+      let url = '';
+
+      if (subject && tier) {
+        if (subject === 'Bio') {
+          url = tier === 'year_1'
+            ? 'A-Levels/Books/A-level Biology A/OCR A Biology.htm'
+            : 'A-Levels/Books/A-Level Biology Year 2/OCR A Biology Year 2.htm';
+        } else if (subject === 'Chem') {
+          url = tier === 'year_1'
+            ? 'A-Levels/Books/A-Level Chemistry A/OCR A Chemistry.htm'
+            : 'A-Levels/Books/A-level Chemistry Year 2/OCR A Chemistry Year 2.htm';
+        } else if (subject === 'Physics') {
+          url = tier === 'year_1'
+            ? 'A-Levels/Books/A-level Physics A/OCR A Physics.htm'
+            : 'A-Levels/Books/A-Level Physics Year 2/OCR A Physics Year 2.htm';
+        }
+
+        if (url) {
+          window.location.href = url;
+        }
+      } else {
+        alert("Please select both a subject and a year.");
+      }
+    }
+  </script>
 </body>
 </html>
-
-
-
-
