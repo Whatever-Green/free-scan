@@ -1,77 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6WM679143B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-6WM679143B');
+  </script>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6WM679143B"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-6WM679143B');
-</script>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FREESCAN</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
-    <link rel="manifest" href="favicon_io/site.webmanifest">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Freescan – Info</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Lexend Deca', sans-serif;
+    }
+  </style>
 </head>
-<script>
-    function navigateToPage() {
-        var subject = document.getElementById('subject').value;
-        var tier = document.getElementById('tier').value;
 
-        if (subject && tier) {
-            var url = '';
-            if (subject === 'Chem') {
-                url = tier === 'Triple' ? 'Cem/OCR Gateway GCSE Chemistry Student Book.html' : 'Cem/Chem-combined/OCR Gateway GCSE Chemistry for Combined Sciences.htm';
-            } else if (subject === 'Bio') {
-                url = tier === 'Triple' ? 'bio/OCR Gateway GCSE Biology Student Book.html' : 'bio/bio-combined/BIO-COMBINED.htm';
-            } else if (subject === 'Physics') {
-                url = tier === 'Triple' ? 'physics/OCR Gateway GCSE Physics Student Book.html' : 'physics/physics-combined/OCR Gateway GCSE Physics for Combined Sciences.htm';
-            }
+<body class="bg-white text-black min-h-screen flex flex-col items-center pt-8 px-6">
+  <!-- Header -->
+  <div class="absolute top-6 left-1/2 transform -translate-x-1/2 text-center">
+    <a href="index.html" class="hover:underline">
+      <h1 class="text-3xl font-bold">Freescan</h1>
+    </a>
+    <p class="text-sm text-gray-600">Free hosting for Textbooks and Resources</p>
+  </div>
 
-            if (url) {
-                window.location.href = url;
-            }
-        } else {
-            alert("Please select both a subject and a tier.");
-        }
-    }
-</script>
-<body>
-    <div class="container">
-        <a href="index.html"><h1>FREESCAN</h1></a>
-        <h3>Infomation</h3>
-        <div class="Clock">
-            <a href="https://time.is/London" id="time_is_link" rel="nofollow" style="font-size:32px">Time in London:</a>
-        <span id="London_z716" style="font-size:22px"><span onclick="location='https://time.is/'" title="https://time.is/">10:56:45PM</span><br><span onclick="location='https://time.is/'" title="https://time.is/">Sunrise: 07:36 Sunset: 16:52</span></span>
-        <script src="//widget.time.is/en_gb.js"></script>
-        <script>
-        time_is_widget.init({London_z716:{template:"TIME<br>SUN", time_format:"12hours:minutes:secondsAMPM", sun_format:"Sunrise: srhour:srminute Sunset: sshour:ssminute", coords:"51.5085300,-0.1257400"}});
-        </script>
-            </div>
-        <p>This website is an ARCHIVE of all relevent text books, directly ripped from multiple sources</p>
-        <h4>How did you do the Science Text-Books?</h4>
-        <p>All the OCR science books are directly re-engineered to work with the Kerboodle backend without needing a Login. This is possible due to  a flaw in Kerboodles backend in how they get IMAGES from the server, using the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe">IFRAME</a> component we are able to directly interface with the Kerboodle's servers without them knowing and its so much faster then Kerboodles own implentation as we have completly removed all bloat and tracking that OXFORD KERBOODLE has added</p>
-        <h4>Why are the other Textbooks look terrible?</h4>
-        <p>They are Just PDFs</p>
-        <p>Graciously "donated" by: LIBGENS and ZLIB.PUB online internet libraries.</p>
-        <b>How is it hosted?</b>
-        <p>For free, its just a static HTML, CSS and javascript website, built to really run wherever.</p>
-        <b>Is this legal?</b>
-        <p>Ask a law student I wouldn't know (probably not)</p>
-        <small>....</small>
+  <!-- Main Content -->
+  <div class="mt-32 max-w-3xl w-full text-left">
+    <h2 class="text-2xl font-semibold mb-4">Information</h2>
+
+    <!-- Clock Widget -->
+    <div class="mb-6">
+      <a href="https://time.is/London" id="time_is_link" rel="nofollow" class="text-xl font-semibold block mb-1">Time in London:</a>
+      <span id="London_z716" class="text-base"></span>
+      <script src="//widget.time.is/en_gb.js"></script>
+      <script>
+        time_is_widget.init({
+          London_z716: {
+            template: "TIME<br>SUN",
+            time_format: "12hours:minutes:secondsAMPM",
+            sun_format: "Sunrise: srhour:srminute Sunset: sshour:ssminute",
+            coords: "51.5085300,-0.1257400"
+          }
+        });
+      </script>
     </div>
+
+    <!-- Content Paragraphs -->
+    <p class="mb-4">This website is an <strong>ARCHIVE</strong> of all relevant textbooks, directly ripped from multiple sources.</p>
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">How did you do the Science Textbooks?</h3>
+    <p class="mb-4">
+      All the OCR science books are re-engineered to work with the Kerboodle backend without needing a login. This is possible due to a flaw in how Kerboodle serves image content.
+      Using the <a class="text-blue-600 underline" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe" target="_blank">iframe</a> element, we can directly pull pages from Kerboodle's servers — without them even noticing.
+      It's faster too, because we stripped all the bloat and tracking Oxford Kerboodle uses.
+    </p>
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">Why do the other textbooks look terrible?</h3>
+    <p class="mb-4">They’re just plain PDFs, generously "donated" by LIBGEN and ZLIB.PUB online library collections.</p>
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">How is this hosted?</h3>
+    <p class="mb-4">For free — just HTML, CSS, and JS. It can run almost anywhere.</p>
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">Is this legal?</h3>
+    <p class="mb-6">Ask a law student. I wouldn’t know (probably not).</p>
+
+    <p class="text-xs text-gray-500">....</p>
+  </div>
 </body>
-<style>
-    .clock{
-        font-size: 20px;
-    }
-</style>
 </html>

@@ -1,105 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6WM679143B"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6WM679143B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6WM679143B');
+  </script>
 
-  gtag('config', 'G-6WM679143B');
-</script>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FREESCAN</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
-    <link rel="manifest" href="favicon_io/site.webmanifest">
-</head>
-<script>
-    function navigateToPage() {
-        var subject = document.getElementById('subject').value;
-        var tier = document.getElementById('tier').value;
-        var resourceType = document.querySelector('input[name="resource"]:checked').value;
-
-        if (subject && tier && resourceType) {
-            var url = '';
-            if (resourceType === 'Textbook') {
-                // Textbook links
-                if (subject === 'Pure Mathematics') {
-                    url = tier === 'Year 1/AS' ? 'maths/Edexcel AS and A level Mathematics.pdf' : 'maths/Maths Year 2 Pure.pdf';
-                } else if (subject === 'Mechanics and Statistics') {
-                    url = tier === 'Year 1/AS' ? 'maths/Maths Year 1 Stats and Mechanics.pdf' : 'maths/Maths Year 2 Stats and Mechanics.pdf';
-                }
-            } else if (resourceType === 'Solution') {
-                // Solution links
-                if (subject === 'Pure Mathematics') {
-                    url = tier === 'Year 1/AS' ? 'maths/Pure 1 Solution Bank - All .pdf' : 'maths/Pure 2 Solution Bank- All.pdf';
-                } else if (subject === 'Mechanics and Statistics') {
-                    url = tier === 'Year 1/AS' ? 'maths/Stats and Mechnaics 1 Solution Bank - All.pdf' : 'maths/Stats and Mechnaics 2 Solution Bank - All..pdf';
-                }
-            }
-
-            if (url) {
-                window.location.href = url;
-            }
-        } else {
-            alert("Please select both a Component, Year, and Resource.");
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Freescan - Maths</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Lexend Deca', sans-serif;
     }
-</script>
+  </style>
+</head>
 
-<body>
-    <div class="container">
-        <a href="index.html"><h1>FREESCAN</h1></a>
-        <h3>Mathematics Textbooks and SolutionBank (new!)</h3>
-        <h2>Select Your Component, Year, and Resource Type</h2>
-        <div class="dropdown-container">
-            <select id="subject" class="dropdown">
-                <option value="">Select Component</option>
-                <option value="Pure Mathematics">Pure Mathematics</option>
-                <option value="Mechanics and Statistics">Mechanics and Statistics</option>
-            </select>
+<body class="bg-white text-black min-h-screen flex flex-col items-center pt-8 px-4">
 
-            <select id="tier" class="dropdown">
-                <option value="">Select Year</option>
-                <option value="Year 1/AS">Year 1/AS</option>
-                <option value="Year 2">Year 2</option>
-            </select>
+  <!-- Logo/Header -->
+  <div class="absolute top-6 left-1/2 transform -translate-x-1/2 text-center">
+    <a href="index.html" class="hover:underline">
+      <h1 class="text-3xl font-bold">Freescan</h1>
+    </a>
+    <p class="text-sm">Free hosting for Textbooks and Resources</p>
+  </div>
 
-            <div class="resource-type">
-                <label><input type="radio" name="resource" value="Textbook"> Textbook</label>
-                <label><input type="radio" name="resource" value="Solution"> Solution</label>
-            </div>
+  <!-- Main Content -->
+  <div class="mt-32 text-center max-w-xl w-full">
+    <h2 class="text-2xl font-semibold mb-2">Mathematics Textbooks and SolutionBank (new!)</h2>
+    <p class="mb-6 text-base">Select Your Component, Year, and Resource Type</p>
 
-            <button class="button" onclick="navigateToPage()">Submit</button>
-            
-        </div>
-        <small>Numbers and stuff, gave up once they started using letters</small>
-        <small>This page is in BETA as we are working on introducing some really neat features</small>
-        <details>
-            <summary>Features</summary>
-            <p>- All text Books from Edexcel For the 2 Years</p>
-            <p>- A compiled copy of the Solutions Bank</p>
-            <p>- Handy Dropdowns</p>
-            <p>COMING SOON:</p>
-            <p>- Online PDF viewer with Notation Support</p>
-            <p>- Tooltips that show on screen asking if you want the solution bank answers for that page</p>
-            <p>- Better Reading Experience on Ipads and computers</p>
-            <p>- Better Mobile Support</p>
+    <!-- Dropdowns -->
+    <div class="grid gap-4 mb-6">
+      <select id="subject" class="border border-black rounded-lg px-4 py-2">
+        <option value="">Select Component</option>
+        <option value="Pure Mathematics">Pure Mathematics</option>
+        <option value="Mechanics and Statistics">Mechanics and Statistics</option>
+      </select>
 
-        </details>
+      <select id="tier" class="border border-black rounded-lg px-4 py-2">
+        <option value="">Select Year</option>
+        <option value="Year 1/AS">Year 1/AS</option>
+        <option value="Year 2">Year 2</option>
+      </select>
+
+      <!-- Radio Buttons -->
+      <div class="flex justify-center gap-6">
+        <label class="flex items-center gap-2">
+          <input type="radio" name="resource" value="Textbook" />
+          Textbook
+        </label>
+        <label class="flex items-center gap-2">
+          <input type="radio" name="resource" value="Solution" />
+          Solution
+        </label>
+      </div>
+
+      <!-- Submit Button -->
+      <button onclick="navigateToPage()" class="mt-2 px-6 py-2 border border-black rounded-lg shadow hover:bg-gray-100 transition">Submit</button>
     </div>
-    
+
+    <!-- Beta Info -->
+    <p class="text-sm text-gray-600 mb-1">Numbers and stuff, gave up once they started using letters</p>
+    <p class="text-sm text-gray-600 mb-4">This page is in BETA as we are working on introducing some really neat features</p>
+
+    <!-- Feature Summary -->
+    <details class="text-left bg-gray-50 rounded-lg p-4 border border-black text-sm">
+      <summary class="cursor-pointer font-semibold mb-2">Features</summary>
+      <ul class="list-disc list-inside">
+        <li>All textbooks from Edexcel for the 2 Years</li>
+        <li>A compiled copy of the Solutions Bank</li>
+        <li>Handy dropdowns</li>
+        <li class="mt-2 font-semibold">COMING SOON:</li>
+        <li>Online PDF viewer with notation support</li>
+        <li>Tooltips that ask if you want the solution bank answers</li>
+        <li>Better reading experience on iPads and computers</li>
+        <li>Better mobile support</li>
+      </ul>
+    </details>
+  </div>
+
+  <!-- Script -->
+  <script>
+    function navigateToPage() {
+      const subject = document.getElementById('subject').value;
+      const tier = document.getElementById('tier').value;
+      const resourceType = document.querySelector('input[name="resource"]:checked')?.value;
+
+      if (subject && tier && resourceType) {
+        let url = '';
+        if (resourceType === 'Textbook') {
+          if (subject === 'Pure Mathematics') {
+            url = tier === 'Year 1/AS'
+              ? 'maths/Edexcel AS and A level Mathematics.pdf'
+              : 'maths/Maths Year 2 Pure.pdf';
+          } else if (subject === 'Mechanics and Statistics') {
+            url = tier === 'Year 1/AS'
+              ? 'maths/Maths Year 1 Stats and Mechanics.pdf'
+              : 'maths/Maths Year 2 Stats and Mechanics.pdf';
+          }
+        } else if (resourceType === 'Solution') {
+          if (subject === 'Pure Mathematics') {
+            url = tier === 'Year 1/AS'
+              ? 'maths/Pure 1 Solution Bank - All .pdf'
+              : 'maths/Pure 2 Solution Bank- All.pdf';
+          } else if (subject === 'Mechanics and Statistics') {
+            url = tier === 'Year 1/AS'
+              ? 'maths/Stats and Mechnaics 1 Solution Bank - All.pdf'
+              : 'maths/Stats and Mechnaics 2 Solution Bank - All..pdf';
+          }
+        }
+
+        if (url) {
+          window.location.href = url;
+        }
+      } else {
+        alert("Please select a Component, Year, and Resource.");
+      }
+    }
+  </script>
+  <div class="absolute bottom-4 left-4 text-sm">
+    <small class="text-1.25xl mb-100">Numbers and stuff, gave up once they started using letters</small>
+  </div>
 </body>
-
 </html>
-
-
-
-

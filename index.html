@@ -1,66 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FREESCAN</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
-<link rel="manifest" href="favicon_io/site.webmanifest">
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6WM679143B"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-6WM679143B');
-</script>
-
-</head>
-<script>
-    function navigateToPage() {
-        var subject = document.getElementById('subject').value;
-        var tier = document.getElementById('tier').value;
-
-        if (subject && tier) {
-            var url = '';
-            if (subject === 'Chem') {
-                url = tier === 'Triple' ? 'Cem/OCR Gateway GCSE Chemistry Student Book.html' : 'Cem/Chem-combined/OCR Gateway GCSE Chemistry for Combined Sciences.htm';
-            } else if (subject === 'Bio') {
-                url = tier === 'Triple' ? 'bio/OCR Gateway GCSE Biology Student Book.html' : 'bio/bio-combined/BIO-COMBINED.htm';
-            } else if (subject === 'Physics') {
-                url = tier === 'Triple' ? 'physics/OCR Gateway GCSE Physics Student Book.html' : 'physics/physics-combined/OCR Gateway GCSE Physics for Combined Sciences.htm';
-            }
-
-            if (url) {
-                window.location.href = url;
-            }
-        } else {
-            alert("Please select both a subject and a tier.");
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Freescan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Lexend Deca', sans-serif;
     }
-    alert("Freescan does not own or claim any rights to the textbooks available on this site. All content is the property of its respective authors and publishers. If you are a copyright owner and believe your work is being shared improperly, please contact us for removal.");
-</script>
-<body>
-    <div class="container">
-        <h1>FREESCAN</h1>
-        <h2>Free hosting for Textbooks and whatnot</h2>
-        <small>We are in the process of bringing you the new A-Level Books and re-designing the entire website</small>
-        <button class="button" onclick="window.location.href='science.html'">Science</button>
-        <button class="button" onclick="window.location.href='computer-science.html'">Computer Science</button>
-        <button class="button" onclick="window.location.href='sociology.html'">Sociology</button>
-        <button class="button" onclick="window.location.href='economics.html'">Economics</button>
-        <button class="button" onclick="window.location.href='Geography.html'">Geography</button>
-        <button class="button" onclick="window.location.href='maths.html'">Mathematics</button>
-        <a href="info.html">More info about website</a>
-        <small>Be kind enough to share this website!</small>
-    </div>
-</body>
-<style>
+  </style>
+</head>
+<body class="bg-white text-black min-h-screen flex flex-col items-center justify-center">
 
-</style>
+  <!-- Light/Dark toggle (icon placeholder only for now) -->
+  <div class="absolute top-4 right-4 text-2xl">
+    ☀️
+  </div>
+
+  <div class="text-center">
+    <h1 class="text-5xl font-bold mb-2">Freescan <small>BETA</small></h1>
+    <p class="text-lg mb-6">Free hosting for Textbooks and Resources</p>
+    
+    <div class="flex flex-col items-center space-y-4">
+      <a href="GCSE.html" class="px-6 py-3 border border-black rounded-lg shadow hover:bg-gray-100 transition">GCSE</a>
+      <a href="A-Level.html" class="px-6 py-3 border border-black rounded-lg shadow hover:bg-gray-100 transition">A-Level</a>
+    </div>
+  </div>
+
+  <!-- About link -->
+  <div class="absolute bottom-4 left-4 text-sm">
+    <a href="info.html" class="hover:underline">About</a>
+  </div>
+
+</body>
 </html>
