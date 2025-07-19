@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6WM679143B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-6WM679143B');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Freescan – Info</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <script src="theme.js" defer></script>
+  <style>
+    body {
+      font-family: 'Lexend Deca', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-white text-black dark:bg-black dark:text-white min-h-screen flex flex-col items-center pt-8 ">
+  <!-- Dark Mode Toggle Button -->
+  <button id="darkToggle" class="absolute top-4 right-4 text-2xl hover:opacity-80 transition">
+    🌙
+  </button>
+  <!-- Header -->
+  <div class="absolute top-6 left-1/2 transform -translate-x-1/2 text-center">
+    <a href="index.html" class="hover:underline">
+      <h1 class="text-3xl font-bold">Freescan</h1>
+    </a>
+    <p class="text-sm text-gray-600">Free hosting for Textbooks and Resources</p>
+  </div>
+
+  <!-- Main Content -->
+  <div class="mt-32 max-w-3xl w-full text-left">
+    <h2 class="text-2xl font-semibold mb-4">Changelog</h2>
+
+    <!-- Content Paragraphs -->
+    <p class="mb-4"></p>
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">0.0.2 - Darkmode</h3>
+    <p class="mb-4">
+      <li>Freescan now doesn't burn your retinas. Click on the "🌙" to embrase the darkness.</li>
+    </p>
+
+    <h3 class="text-xl font-semibold mt-6 mb-2">0.0.1 - A new look</h3>
+    <p class="mb-4">
+        <p>Freescan now has a whole new lick of paint!</p>
+      <li>Complete overhaul of the frontend UI with a modern, minimalistic design system.</li>
+      <li>Implemented a clean, responsive layout using contemporary CSS methodologies for improved performance and scalability.</li>
+      <li>Enhanced user interface consistency by adopting a streamlined design language focused on usability and accessibility.</li>
+      <li>Much better mobile support</li>
+      <li>Optimised styling and component architecture to support future feature expansion and maintainability.</li>
+      <li>Made a distinction between A-Level and GCSE content</li>
+      <li>Added new English, Geography and Economics content</li>
+      <li>We now allow traffic from "freescan.pages.dev</li>
+    </p>
+  </div>
+</body>
+</html>
