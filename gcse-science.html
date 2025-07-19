@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="transition-colors duration-300">
 <head>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6WM679143B"></script>
@@ -10,11 +10,16 @@
     gtag('config', 'G-6WM679143B');
   </script>
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Freescan – GCSE OCR</title>
   <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
   <style>
     body {
       font-family: 'Lexend Deca', sans-serif;
@@ -22,7 +27,12 @@
   </style>
 </head>
 
-<body class="bg-white text-black min-h-screen flex flex-col items-center pt-8 px-4">
+<body class="bg-white text-black dark:bg-black dark:text-white transition-colors duration-300 min-h-screen flex flex-col items-center pt-8">
+
+  <!-- Dark Mode Toggle Button -->
+  <button id="darkToggle" class="absolute top-4 right-4 text-2xl hover:opacity-80 transition">
+    🌙
+  </button>
 
   <!-- Logo/Header -->
   <div class="absolute top-6 left-1/2 transform -translate-x-1/2 text-center">
@@ -39,24 +49,26 @@
 
     <!-- Dropdowns -->
     <div class="grid gap-4 mb-6">
-      <select id="subject" class="border border-black rounded-lg px-4 py-2">
+      <select id="subject" class="border border-black dark:border-white rounded-lg px-4 py-2 bg-white dark:bg-gray-900 dark:text-white">
         <option value="">Select Subject</option>
         <option value="Chem">Chemistry</option>
         <option value="Bio">Biology</option>
         <option value="Physics">Physics</option>
       </select>
 
-      <select id="tier" class="border border-black rounded-lg px-4 py-2">
+      <select id="tier" class="border border-black dark:border-white rounded-lg px-4 py-2 bg-white dark:bg-gray-900 dark:text-white">
         <option value="">Select Tier</option>
         <option value="Triple">Triple</option>
         <option value="Combined">Combined</option>
       </select>
 
       <!-- Submit Button -->
-      <button onclick="navigateToPage()" class="mt-2 px-6 py-2 border border-black rounded-lg shadow hover:bg-gray-100 transition">Submit</button>
+      <button onclick="navigateToPage()" class="mt-2 px-6 py-2 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+        Submit
+      </button>
     </div>
 
-    <small class="text-xs text-gray-500">KERBOODLE BACKEND RE-WRITTEN</small>
+    <small class="text-xs text-gray-500 dark:text-gray-400">KERBOODLE BACKEND RE-WRITTEN</small>
   </div>
 
   <!-- Navigation Script -->
@@ -89,5 +101,8 @@
       }
     }
   </script>
+
+  <!-- Dark Mode Script -->
+  <script src="theme.js"></script>
 </body>
 </html>

@@ -6,13 +6,17 @@
   <title>GCSE - Freescan</title>
   <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <script src="../../../../../theme.js" defer></script>
   <style>
     body {
       font-family: 'Lexend Deca', sans-serif;
     }
   </style>
 </head>
-<body class="bg-white text-black min-h-screen flex flex-col items-center pt-8">
+<body class="bg-white text-black dark:bg-black dark:text-white min-h-screen flex flex-col items-center pt-8 ">
 
   <!-- Header (Logo at the top) -->
   <div class="absolute top-6 left-1/2 transform -translate-x-1/2 text-center">
@@ -29,8 +33,8 @@
     <!-- Subject Buttons -->
     <div class="grid grid-cols-2 gap-6">
       <!--Change grid cols -n to 2 once there are more then 1 books-->
-      <a href="My-Revision-Notes_-Sean-O’Byrne_-George-Rouse-OCR-GCSE-Computer-Science-Hodder-Education-_2017_.pdf" class="px-6 py-3 border border-black rounded-lg shadow hover:bg-gray-100 transition text-center">My Revision Notes - Sean O’Byrne, George Rouse OCR GCSE Computer Science Hodder Education (2017)</a>
-      <a href="Gavin Craddock_ Lorne Pearcey_ George Rouse - OCR GCSE Computer Science (2020).pdf" class="px-6 py-3 border border-black rounded-lg shadow hover:bg-gray-100 transition text-center">Gavin Craddock_ Lorne Pearcey_ George Rouse - OCR GCSE Computer Science (2020)</a>
+      <a href="My-Revision-Notes_-Sean-O’Byrne_-George-Rouse-OCR-GCSE-Computer-Science-Hodder-Education-_2017_.pdf" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">My Revision Notes - Sean O’Byrne, George Rouse OCR GCSE Computer Science Hodder Education (2017)</a>
+      <a href="Gavin Craddock_ Lorne Pearcey_ George Rouse - OCR GCSE Computer Science (2020).pdf" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">Gavin Craddock_ Lorne Pearcey_ George Rouse - OCR GCSE Computer Science (2020)</a>
 
     </div>
   </div>

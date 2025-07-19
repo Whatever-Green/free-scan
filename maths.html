@@ -15,6 +15,11 @@
   <title>Freescan - Maths</title>
   <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    };
+  </script>
   <style>
     body {
       font-family: 'Lexend Deca', sans-serif;
@@ -22,7 +27,12 @@
   </style>
 </head>
 
-<body class="bg-white text-black min-h-screen flex flex-col items-center pt-8 px-4">
+<body class="bg-white text-black dark:bg-black dark:text-white min-h-screen flex flex-col items-center pt-8 px-4 transition-colors duration-300">
+
+  <!-- Dark Mode Toggle Button -->
+  <button id="darkToggle" class="absolute top-4 right-4 text-2xl hover:opacity-80 transition">
+    🌙
+  </button>
 
   <!-- Logo/Header -->
   <div class="absolute top-6 left-1/2 transform -translate-x-1/2 text-center">
@@ -39,13 +49,13 @@
 
     <!-- Dropdowns -->
     <div class="grid gap-4 mb-6">
-      <select id="subject" class="border border-black rounded-lg px-4 py-2">
+      <select id="subject" class="border border-black dark:border-white rounded-lg px-4 py-2 bg-white dark:bg-gray-900 text-black dark:text-white">
         <option value="">Select Component</option>
         <option value="Pure Mathematics">Pure Mathematics</option>
         <option value="Mechanics and Statistics">Mechanics and Statistics</option>
       </select>
 
-      <select id="tier" class="border border-black rounded-lg px-4 py-2">
+      <select id="tier" class="border border-black dark:border-white rounded-lg px-4 py-2 bg-white dark:bg-gray-900 text-black dark:text-white">
         <option value="">Select Year</option>
         <option value="Year 1/AS">Year 1/AS</option>
         <option value="Year 2">Year 2</option>
@@ -64,14 +74,16 @@
       </div>
 
       <!-- Submit Button -->
-      <button onclick="navigateToPage()" class="mt-2 px-6 py-2 border border-black rounded-lg shadow hover:bg-gray-100 transition">Submit</button>
+      <button onclick="navigateToPage()" class="mt-2 px-6 py-2 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+        Submit
+      </button>
     </div>
 
     <!-- Beta Info -->
-    <p class="text-sm text-gray-600 mb-4">This page is in BETA as we are working on introducing some really neat features</p>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">This page is in BETA as we are working on introducing some really neat features</p>
 
     <!-- Feature Summary -->
-    <details class="text-left bg-gray-50 rounded-lg p-4 border border-black text-sm">
+    <details class="text-left bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-black dark:border-white text-sm">
       <summary class="cursor-pointer font-semibold mb-2">Features</summary>
       <ul class="list-disc list-inside">
         <li>All textbooks from Edexcel for the 2 Years</li>
@@ -86,7 +98,12 @@
     </details>
   </div>
 
-  <!-- Script -->
+  <!-- Footer Note -->
+  <div class="absolute bottom-4 left-4 text-sm">
+    <small class="text-1.25xl">Numbers and stuff, gave up once they started using letters</small>
+  </div>
+
+  <!-- Navigation Script -->
   <script>
     function navigateToPage() {
       const subject = document.getElementById('subject').value;
@@ -124,9 +141,17 @@
         alert("Please select a Component, Year, and Resource.");
       }
     }
+
+    // Dark Mode Toggle Script
+    const toggle = document.getElementById('darkToggle');
+    const root = document.documentElement;
+    if (localStorage.getItem('theme') === 'dark') {
+      root.classList.add('dark');
+    }
+    toggle.addEventListener('click', () => {
+      root.classList.toggle('dark');
+      localStorage.setItem('theme', root.classList.contains('dark') ? 'dark' : 'light');
+    });
   </script>
-  <div class="absolute bottom-4 left-4 text-sm">
-    <small class="text-1.25xl mb-100">Numbers and stuff, gave up once they started using letters</small>
-  </div>
 </body>
 </html>

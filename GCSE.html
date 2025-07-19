@@ -6,14 +6,21 @@
   <title>GCSE - Freescan</title>
   <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <script src="theme.js" defer></script>
   <style>
     body {
       font-family: 'Lexend Deca', sans-serif;
     }
   </style>
 </head>
-<body class="bg-white text-black min-h-screen flex flex-col items-center pt-8">
-
+<body class="bg-white text-black dark:bg-black dark:text-white min-h-screen flex flex-col items-center pt-8 ">
+  <!-- Dark Mode Toggle Button -->
+  <button id="darkToggle" class="absolute top-4 right-4 text-2xl hover:opacity-80 transition">
+    🌙
+  </button>
   <!-- Header (Logo at the top) -->
   <div class="absolute top-6 left-1/2 transform -translate-x-1/2 text-center">
     <a href="index.html" class="hover:underline">
@@ -28,11 +35,10 @@
 
     <!-- Subject Buttons -->
     <div class="grid grid-cols-2 gap-6">
-      <a href="gcse-science.html" class="px-6 py-3 border border-black rounded-lg shadow hover:bg-gray-100 transition text-center">Science</a>
-      <a href="GCSE/geography/Geography.html" class="px-6 py-3 border border-black rounded-lg shadow hover:bg-gray-100 transition text-center">Geography</a>
-      <a href="GCSE/computerscience/computer-science.html" class="px-6 py-3 border border-black rounded-lg shadow hover:bg-gray-100 transition text-center">Computer Science</a>
+      <a href="gcse-science.html" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">Science</a>
+      <a href="GCSE/geography/Geography.html" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">Geography</a>
+      <a href="GCSE/computerscience/computer-science.html" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">Computer Science</a>
     </div>
   </div>
-
 </body>
 </html>

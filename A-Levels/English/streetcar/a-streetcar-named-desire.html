@@ -6,14 +6,21 @@
   <title>GCSE - Freescan</title>
   <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <script src="../../../theme.js" defer></script>
   <style>
     body {
       font-family: 'Lexend Deca', sans-serif;
     }
   </style>
 </head>
-<body class="bg-white text-black min-h-screen flex flex-col items-center pt-8">
-
+<body class="bg-white text-black dark:bg-black dark:text-white min-h-screen flex flex-col items-center pt-8 ">
+  <!-- Dark Mode Toggle Button -->
+  <button id="darkToggle" class="absolute top-4 right-4 text-2xl hover:opacity-80 transition">
+    🌙
+  </button>
   <!-- Header (Logo at the top) -->
   <div class="absolute top-6 left-1/2 transform -translate-x-1/2 text-center">
     <a href="../../../A-Level.html" class="hover:underline">
@@ -30,13 +37,13 @@
     <!-- Subject Buttons -->
     <div class="grid grid-cols-2 gap-6">
       <!--Change grid cols -n to 2 once there are more then 1 books-->
-      <a href="A_streetcar_named_desire_full.pdf" class="px-6 py-3 border border-black rounded-lg shadow hover:bg-gray-100 transition text-center">Full Play PDF</a>
-      <a href="ASND-Synopsis-Analysis-Key-quotations.pdf" class="px-6 py-3 border border-black rounded-lg shadow hover:bg-gray-100 transition text-center">Synopsis, Analysis, Key Quotations</a>
-      <a href="Literature-yr-13-Term-1-A-Streetcar-Named-Desire-Knowledge-Organiser-2.206286907.pdf" class="px-6 py-3 border border-black rounded-lg shadow hover:bg-gray-100 transition text-center">Knowledge Organiser</a>
-      <a href="ZigZag-Streetcar-Learner-Pack.pdf" class="px-6 py-3 border border-black rounded-lg shadow hover:bg-gray-100 transition text-center">ZigZag Learning Pack</a>
-      <a href="NCB-Y11-12-A-Level-English-Language-and-Literature-SIL-Streetcar-Context-Booklet.pdf" class="px-6 py-3 border border-black rounded-lg shadow hover:bg-gray-100 transition text-center">Contextual Documents</a>
-      <a href="70-A-Streetcar-Named-Desire-v7.pdf" class="px-6 py-3 border border-black rounded-lg shadow hover:bg-gray-100 transition text-center">English Association Bookmarks</a>
-      <a href="AS 1 English Literature eGuide Williams_ A Streetcar Named Desire.pdf" class="px-6 py-3 border border-black rounded-lg shadow hover:bg-gray-100 transition text-center">eGuide Drama</a>
+      <a href="A_streetcar_named_desire_full.pdf" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">Full Play PDF</a>
+      <a href="ASND-Synopsis-Analysis-Key-quotations.pdf" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">Synopsis, Analysis, Key Quotations</a>
+      <a href="Literature-yr-13-Term-1-A-Streetcar-Named-Desire-Knowledge-Organiser-2.206286907.pdf" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">Knowledge Organiser</a>
+      <a href="ZigZag-Streetcar-Learner-Pack.pdf" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">ZigZag Learning Pack</a>
+      <a href="NCB-Y11-12-A-Level-English-Language-and-Literature-SIL-Streetcar-Context-Booklet.pdf" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">Contextual Documents</a>
+      <a href="70-A-Streetcar-Named-Desire-v7.pdf" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">English Association Bookmarks</a>
+      <a href="AS 1 English Literature eGuide Williams_ A Streetcar Named Desire.pdf" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">eGuide Drama</a>
     </div>
     <small>I'm no English student, hope these help!</small>
     </div>
