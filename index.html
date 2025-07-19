@@ -6,6 +6,7 @@
   <title>Freescan</title>
   <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="theme.js" defer></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -18,6 +19,7 @@
   </style>
 </head>
 <body class="bg-white text-black dark:bg-black dark:text-white transition-colors duration-300 min-h-screen flex flex-col items-center justify-center">
+
 
   <!-- Dark Mode Toggle Button -->
   <button id="darkToggle" class="absolute top-4 right-4 text-2xl hover:opacity-80 transition">
@@ -49,20 +51,6 @@
     <a href="changelog.html" class="hover:underline">0.0.2</a>
   </div>
 
-  <!-- Dark Mode Script -->
-  <script>
-    const toggle = document.getElementById('darkToggle');
-    const root = document.documentElement;
 
-    // Load saved theme
-    if (localStorage.getItem('theme') === 'dark') {
-      root.classList.add('dark');
-    }
-
-    toggle.addEventListener('click', () => {
-      root.classList.toggle('dark');
-      localStorage.setItem('theme', root.classList.contains('dark') ? 'dark' : 'light');
-    });
-  </script>
 </body>
 </html>
