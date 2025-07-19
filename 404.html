@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 | Freescan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="theme.js" defer></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    };
+  </script>
+  <style>
+    body {
+      font-family: 'Lexend Deca', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-white text-black dark:bg-black dark:text-white min-h-screen flex flex-col items-center pt-8 px-4 transition-colors duration-300">
+
+  <!-- Dark Mode Toggle -->
+  <button id="darkToggle" class="absolute top-4 right-4 text-2xl hover:opacity-80 transition-transform duration-300 hover:rotate-12 active:scale-90">
+    🌙
+  </button>
+
+  <!-- Main Content -->
+  <div id="hero" class="text-center opacity-100 translate-y-4 transition-all duration-700">
+    <h1 class="text-6xl font-bold mb-4">404</h1>
+    <p class="text-lg mb-6">yeah... so that page doesn't exist</p>
+
+    <a href="index.html" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition transform hover:scale-105 active:scale-95">
+      Back to Home
+    </a>
+  </div>
+
+  <!-- Footer -->
+  <div class="absolute bottom-4 text-sm opacity-60">
+    <p>Freescan — Free hosting for textbooks and resources</p>
+  </div>
+</body>
+</html>
