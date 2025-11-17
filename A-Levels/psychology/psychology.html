@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GCSE - Freescan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <script src="../../../theme.js" defer></script>
+  <style>
+    body {
+      font-family: 'Lexend Deca', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-white text-black dark:bg-black dark:text-white min-h-screen flex flex-col items-center pt-8 ">
+  <!-- Dark Mode Toggle Button -->
+  <button id="darkToggle" class="absolute top-4 right-4 text-2xl hover:opacity-80 transition">
+    🌙
+  </button>
+  <!-- Header (Logo at the top) -->
+  <div class="absolute top-6 left-1/2 transform -translate-x-1/2 text-center">
+    <a href="../../A-Level.html" class="hover:underline">
+      <h1 class="text-3xl font-bold">Freescan - A Level</h1>
+    </a>
+    <p class="text-sm">Free hosting for Textbooks and Resources</p>
+  </div>
+
+  <!-- GCSE Title -->
+  <div class="mt-32 text-center">
+    <h2 class="text-4xl font-bold mb-8">Psychology</h2>
+    <p>NOTICE: Due to large pdf size we are unable to host it on our servers</p>
+    <p>PDFs below are hosted by a 3rd party unaffliliated with FreeScan (quality might vary)</p>
+
+    <!-- Subject Buttons -->
+    <div class="grid grid-cols-1 gap-6">
+      <!--Change grid cols -n to 2 once there are more then 1 books-->
+      <a href="https://pdfhost.io/v/UupBuJUSZD_ilide_info-cara-flanagan-dave-berry-matt-jarvis-and-rob-liddle-aqa-psychology-for-a-lev-pr_8ad6c6e556ffb0903d5d3a9c1ca24f51-compressed" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">AQA Psychology Textbook</a>
+
+    </div>
+  </div>
+  <div class="absolute bottom-4 left-4 text-sm">
+    <small class="text-1.25xl mb-100">Go lick a rock</small>
+  </div>
+</body>
+</html>
