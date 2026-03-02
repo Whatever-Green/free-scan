@@ -1,0 +1,1678 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Econ Graph Drawer — Edexcel A Level</title>
+<style>
+:root{
+  --bg:#0f1117;--panel:#161b27;--border:#252d3d;--accent:#4f8ef7;--accent2:#7c3aed;
+  --text:#e2e8f0;--text2:#8b9db8;--green:#22c55e;--red:#ef4444;--yellow:#f59e0b;
+  font-family:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+body{background:var(--bg);color:var(--text);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+canvas{display:block;touch-action:none;cursor:crosshair;width:100%;height:100%;position:absolute;top:0;left:0}
+canvas.pan-cursor{cursor:grab}
+canvas.grab-cursor{cursor:grabbing}
+canvas.select-cursor{cursor:default}
+
+/* Header */
+#header{height:44px;background:var(--panel);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0;z-index:10}
+#header .logo{font-size:13px;font-weight:600;color:var(--accent);letter-spacing:.5px;white-space:nowrap}
+#header .sep{width:1px;height:20px;background:var(--border)}
+.tool-btn{height:28px;padding:0 10px;border:1px solid var(--border);background:transparent;
+  color:var(--text2);font-family:inherit;font-size:11px;border-radius:4px;cursor:pointer;
+  display:flex;align-items:center;gap:5px;white-space:nowrap;transition:all .15s}
+.tool-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(79,142,247,.08)}
+.tool-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tool-btn.danger{border-color:var(--border)}
+.tool-btn.danger:hover{border-color:var(--red);color:var(--red);background:rgba(239,68,68,.08)}
+#toolRow{display:flex;gap:4px;flex-wrap:nowrap;overflow-x:auto}
+#toolRow::-webkit-scrollbar{display:none}
+.spacer{flex:1}
+kbd{background:rgba(255,255,255,.07);border:1px solid var(--border);border-radius:3px;
+  padding:1px 5px;font-size:9px;font-family:inherit;color:var(--text2)}
+
+/* Main layout */
+#main{flex:1;display:flex;overflow:hidden}
+
+/* Left panel */
+#left{width:220px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden}
+#left .phead{padding:10px 12px 8px;font-size:11px;font-weight:600;color:var(--text2);
+  letter-spacing:.8px;text-transform:uppercase;border-bottom:1px solid var(--border)}
+#left .scroll{flex:1;overflow-y:auto;padding:8px}
+#left .scroll::-webkit-scrollbar{width:4px}
+#left .scroll::-webkit-scrollbar-track{background:transparent}
+#left .scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+.section{margin-bottom:12px}
+.section-title{font-size:10px;color:var(--text2);letter-spacing:.6px;text-transform:uppercase;
+  margin-bottom:6px;padding-left:2px}
+.tmpl-btn{width:100%;text-align:left;padding:7px 10px;background:rgba(255,255,255,.03);
+  border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:inherit;
+  font-size:11px;cursor:pointer;margin-bottom:4px;transition:all .15s;display:flex;align-items:center;gap:6px}
+.tmpl-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(79,142,247,.06)}
+.tmpl-btn .cat{font-size:9px;color:var(--text2);margin-left:auto}
+.shortcut-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.shortcut-item{font-size:10px;color:var(--text2);padding:4px 6px;background:rgba(255,255,255,.02);
+  border-radius:3px;display:flex;align-items:center;gap:4px}
+.shortcut-item kbd{font-size:8px}
+
+/* Canvas area */
+#canvasWrap{flex:1;position:relative;background:var(--bg);overflow:hidden;display:flex}
+
+/* Right panel */
+#right{width:240px;flex-shrink:0;background:var(--panel);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden}
+#right .scroll{flex:1;overflow-y:auto;padding:8px}
+#right .scroll::-webkit-scrollbar{width:4px}
+#right .scroll::-webkit-scrollbar-track{background:transparent}
+#right .scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* Form controls */
+label.ctrl{display:flex;flex-direction:column;gap:3px;font-size:10px;color:var(--text2)}
+label.ctrl input,label.ctrl select{
+  background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);
+  font-family:inherit;font-size:11px;padding:5px 8px;border-radius:4px;outline:none;width:100%}
+label.ctrl input:focus,label.ctrl select:focus{border-color:var(--accent)}
+label.ctrl select option{background:#1e2535}
+.ctrl-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.ctrl-full{margin-bottom:8px}
+input[type=color]{height:32px;padding:2px 4px;cursor:pointer}
+input[type=range]{accent-color:var(--accent);cursor:pointer}
+
+.prop-section{border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:10px}
+.prop-section-title{font-size:10px;font-weight:600;color:var(--text2);letter-spacing:.5px;
+  text-transform:uppercase;margin-bottom:8px}
+
+.shift-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:8px}
+.shift-btn{padding:8px;background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:4px;color:var(--text);font-size:14px;cursor:pointer;text-align:center;
+  transition:all .15s;font-family:inherit}
+.shift-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(79,142,247,.08)}
+.shift-btn.center{grid-column:2}
+
+.check-row{display:flex;align-items:center;gap:8px;font-size:10px;color:var(--text2)}
+.check-row input[type=checkbox]{accent-color:var(--accent);cursor:pointer;width:13px;height:13px}
+
+.badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:10px;
+  font-size:9px;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+.badge.green{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+.badge.blue{background:rgba(79,142,247,.15);color:var(--accent);border:1px solid rgba(79,142,247,.3)}
+.badge.yellow{background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3)}
+
+#status{font-size:10px;color:var(--text2);padding:6px 12px;border-top:1px solid var(--border);
+  background:var(--panel);display:flex;gap:12px;align-items:center}
+#status span{display:flex;align-items:center;gap:4px}
+
+/* Context menu */
+#ctxMenu{position:fixed;background:var(--panel);border:1px solid var(--border);border-radius:6px;
+  padding:4px;min-width:160px;z-index:1000;box-shadow:0 8px 30px rgba(0,0,0,.5);display:none}
+#ctxMenu button{display:flex;width:100%;text-align:left;padding:6px 10px;background:none;
+  border:none;color:var(--text);font-family:inherit;font-size:11px;cursor:pointer;
+  border-radius:4px;gap:8px;align-items:center}
+#ctxMenu button:hover{background:rgba(79,142,247,.1);color:var(--accent)}
+#ctxMenu .sep{height:1px;background:var(--border);margin:3px 0}
+
+/* Tooltip */
+#tooltip{position:fixed;background:rgba(22,27,39,.95);border:1px solid var(--border);
+  padding:4px 8px;border-radius:4px;font-size:10px;color:var(--text);pointer-events:none;
+  z-index:999;display:none;white-space:nowrap}
+
+/* Selection color indicator */
+.color-preview{width:24px;height:24px;border-radius:4px;border:1px solid var(--border);
+  flex-shrink:0;cursor:pointer}
+
+/* Animate toggle badge */
+#animMode{font-size:10px;cursor:pointer;user-select:none}
+
+.export-row{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.btn-sm{padding:6px;background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:4px;color:var(--text2);font-family:inherit;font-size:10px;cursor:pointer;
+  text-align:center;transition:all .15s}
+.btn-sm:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Ghost line during drawing */
+.crosshair-hint{pointer-events:none;position:absolute;inset:0;opacity:.4}
+
+/* Scrollbar general */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div class="logo">ECON GRAPH</div>
+  <div class="sep"></div>
+  <div id="toolRow">
+    <button class="tool-btn" data-tool="select" title="Select (V)">⬡ Select</button>
+    <button class="tool-btn" data-tool="line" title="Line (L)">╱ Line</button>
+    <button class="tool-btn" data-tool="arrow" title="Arrow (A)">→ Arrow</button>
+    <button class="tool-btn" data-tool="curve" title="Curve (C)">∿ Curve</button>
+    <button class="tool-btn" data-tool="rect" title="Rectangle (R)">▭ Rect</button>
+    <button class="tool-btn" data-tool="pen" title="Pen (P)">✏ Pen</button>
+    <button class="tool-btn" data-tool="text" title="Text (T)">T Text</button>
+    <button class="tool-btn" data-tool="erase" title="Erase (E)">⌫ Erase</button>
+  </div>
+  <div class="spacer"></div>
+  <button class="tool-btn" id="btnUndo" title="Ctrl+Z">↩ Undo</button>
+  <button class="tool-btn" id="btnRedo" title="Ctrl+Y">↪ Redo</button>
+  <div class="sep"></div>
+  <button class="tool-btn" id="btnClear" style="color:#ef4444">✕ Clear</button>
+</div>
+
+<div id="main">
+  <!-- LEFT PANEL -->
+  <div id="left">
+    <div class="phead">Templates</div>
+    <div class="scroll">
+      <div class="section">
+        <div class="section-title">Micro</div>
+        <button class="tmpl-btn" data-tmpl="blank">⊞ Blank Graph</button>
+        <button class="tmpl-btn" data-tmpl="supplyDemand">D&S Equilibrium</button>
+        <button class="tmpl-btn" data-tmpl="ppf">PPF Curve</button>
+        <button class="tmpl-btn" data-tmpl="elasticity">PED / PES Shapes</button>
+        <button class="tmpl-btn" data-tmpl="externalityNeg">Neg. Production Ext.</button>
+        <button class="tmpl-btn" data-tmpl="externalityPos">Pos. Consumption Ext.</button>
+        <button class="tmpl-btn" data-tmpl="taxSubsidy">Indirect Tax / Subsidy</button>
+        <button class="tmpl-btn" data-tmpl="priceControls">Price Controls</button>
+        <button class="tmpl-btn" data-tmpl="monopoly">Monopoly (AR/MR/AC/MC)</button>
+        <button class="tmpl-btn" data-tmpl="monopolyProfit">Monopoly Profit Box</button>
+        <button class="tmpl-btn" data-tmpl="kinkDemand">Kinked Demand</button>
+        <button class="tmpl-btn" data-tmpl="monopsony">Monopsony (MCL/ACL)</button>
+        <button class="tmpl-btn" data-tmpl="bufferStock">Buffer Stock</button>
+      </div>
+      <div class="section">
+        <div class="section-title">Macro</div>
+        <button class="tmpl-btn" data-tmpl="adas">AD / AS</button>
+        <button class="tmpl-btn" data-tmpl="phillips">Phillips Curve</button>
+        <button class="tmpl-btn" data-tmpl="lorenz">Lorenz Curve</button>
+        <button class="tmpl-btn" data-tmpl="multiplier">Multiplier Effect</button>
+      </div>
+      <div class="section">
+        <div class="section-title">Canvas</div>
+        <label class="ctrl ctrl-full" style="margin-bottom:6px">
+          Smart Mode
+          <select id="smartMode">
+            <option value="none">Off</option>
+            <option value="supplyDemand">Supply & Demand</option>
+            <option value="externality">Externality</option>
+            <option value="adas">AD / AS</option>
+          </select>
+        </label>
+        <label class="ctrl ctrl-full" style="margin-bottom:6px">
+          Zoom <span id="zoomLabel">100%</span>
+          <input type="range" id="zoomRange" min="20" max="300" value="100"/>
+        </label>
+        <div class="check-row" style="margin-bottom:6px">
+          <input type="checkbox" id="snapGrid" checked/>
+          <span>Snap to grid</span>
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="showGrid" checked/>
+          <span>Show grid</span>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">Shortcuts</div>
+        <div class="shortcut-grid">
+          <div class="shortcut-item"><kbd>V</kbd> Select</div>
+          <div class="shortcut-item"><kbd>L</kbd> Line</div>
+          <div class="shortcut-item"><kbd>A</kbd> Arrow</div>
+          <div class="shortcut-item"><kbd>C</kbd> Curve</div>
+          <div class="shortcut-item"><kbd>P</kbd> Pen</div>
+          <div class="shortcut-item"><kbd>T</kbd> Text</div>
+          <div class="shortcut-item"><kbd>E</kbd> Erase</div>
+          <div class="shortcut-item"><kbd>Del</kbd> Delete</div>
+          <div class="shortcut-item"><kbd>Space</kbd> Pan</div>
+          <div class="shortcut-item"><kbd>Scroll</kbd> Zoom</div>
+          <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>D</kbd> Dup</div>
+          <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>Z</kbd> Undo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CANVAS -->
+  <div id="canvasWrap">
+    <canvas id="c"></canvas>
+    <div id="tooltip"></div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div id="right">
+    <div class="phead" style="display:flex;justify-content:space-between;align-items:center">
+      <span>Properties</span>
+      <span id="selInfo" class="badge blue">None</span>
+    </div>
+    <div class="scroll">
+
+      <div class="prop-section">
+        <div class="prop-section-title">Style</div>
+        <div class="ctrl-row">
+          <label class="ctrl">Stroke
+            <input type="color" id="stroke" value="#e2e8f0"/>
+          </label>
+          <label class="ctrl">Width
+            <input type="number" id="strokeW" min="1" max="12" value="2"/>
+          </label>
+        </div>
+        <div class="ctrl-row">
+          <label class="ctrl">Fill
+            <input type="color" id="fill" value="#e2e8f0"/>
+          </label>
+          <label class="ctrl">Dash
+            <select id="dash">
+              <option value="solid">Solid</option>
+              <option value="dash">Dash</option>
+              <option value="dot">Dot</option>
+              <option value="longdash">Long dash</option>
+            </select>
+          </label>
+        </div>
+        <div class="ctrl-full">
+          <label class="ctrl">Label
+            <input type="text" id="label" placeholder="e.g. D, S, MSC, AD…"/>
+          </label>
+        </div>
+        <div class="ctrl-full">
+          <label class="ctrl">Font size
+            <input type="number" id="fontSize" min="8" max="48" value="14"/>
+          </label>
+        </div>
+      </div>
+
+      <div class="prop-section">
+        <div class="prop-section-title">Arrange</div>
+        <div class="export-row" style="margin-bottom:4px">
+          <button class="btn-sm" id="btnFront">Bring Front</button>
+          <button class="btn-sm" id="btnBack">Send Back</button>
+        </div>
+        <div class="export-row">
+          <button class="btn-sm" id="btnDup">Duplicate</button>
+          <button class="btn-sm" id="btnDel" style="color:var(--red)">Delete</button>
+        </div>
+      </div>
+
+      <div class="prop-section">
+        <div class="prop-section-title">Shift / Animate</div>
+        <div class="shift-grid">
+          <button class="shift-btn" data-dir="upleft">↖</button>
+          <button class="shift-btn" data-dir="up">↑</button>
+          <button class="shift-btn" data-dir="upright">↗</button>
+          <button class="shift-btn" data-dir="left">←</button>
+          <button class="shift-btn center" style="font-size:10px;color:var(--text2)" id="centerBtn">●</button>
+          <button class="shift-btn" data-dir="right">→</button>
+          <button class="shift-btn" data-dir="downleft">↙</button>
+          <button class="shift-btn" data-dir="down">↓</button>
+          <button class="shift-btn" data-dir="downright">↘</button>
+        </div>
+        <div class="ctrl-row">
+          <label class="ctrl">Step (px)
+            <input type="number" id="shiftStep" min="5" max="300" value="48"/>
+          </label>
+          <label class="ctrl">Speed
+            <select id="animSpeed">
+              <option value="8">Slow</option>
+              <option value="16" selected>Normal</option>
+              <option value="24">Fast</option>
+            </select>
+          </label>
+        </div>
+        <div class="check-row" style="margin-bottom:8px">
+          <input type="checkbox" id="animDuplicate" checked/>
+          <span>Show ghost (keep original)</span>
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="animAnimate" checked/>
+          <span>Animate movement</span>
+        </div>
+      </div>
+
+      <div class="prop-section">
+        <div class="prop-section-title">Export</div>
+        <div class="export-row" style="margin-bottom:4px">
+          <button class="btn-sm" id="btnPNG">PNG</button>
+          <button class="btn-sm" id="btnSVG">SVG</button>
+        </div>
+        <div class="export-row">
+          <button class="btn-sm" id="btnJSON">Export JSON</button>
+          <label class="btn-sm" style="cursor:pointer">Import JSON
+            <input type="file" accept=".json" id="importJSON" style="display:none"/>
+          </label>
+        </div>
+      </div>
+
+    </div>
+    <div id="status">
+      <span>🔍 <span id="zoomDisp">100%</span></span>
+      <span>📍 <span id="coordDisp">0, 0</span></span>
+      <span id="toolDisp">SELECT</span>
+    </div>
+  </div>
+</div>
+
+<div id="ctxMenu"></div>
+
+<script>
+(()=>{
+'use strict';
+// ─── Utilities ────────────────────────────────────────────────────────────────
+const uid=()=>Math.random().toString(36).slice(2,9);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+const deepCopy=o=>JSON.parse(JSON.stringify(o));
+
+function lineIntersect(p1,p2,p3,p4){
+  const d1x=p2.x-p1.x,d1y=p2.y-p1.y,d2x=p4.x-p3.x,d2y=p4.y-p3.y;
+  const den=d1x*d2y-d1y*d2x;
+  if(Math.abs(den)<1e-9)return null;
+  const t=((p3.x-p1.x)*d2y-(p3.y-p1.y)*d2x)/den;
+  return{x:p1.x+t*d1x,y:p1.y+t*d1y,t};
+}
+
+function ptSegDist(p,a,b){
+  const vx=b.x-a.x,vy=b.y-a.y,wx=p.x-a.x,wy=p.y-a.y;
+  const c1=vx*wx+vy*wy;
+  if(c1<=0)return dist(p,a);
+  const c2=vx*vx+vy*vy;
+  if(c2<=c1)return dist(p,b);
+  const t=c1/c2;
+  return dist(p,{x:a.x+t*vx,y:a.y+t*vy});
+}
+
+function snapV(v,s){return Math.round(v/s)*s;}
+
+// ─── Canvas & Viewport ────────────────────────────────────────────────────────
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+const wrap=document.getElementById('canvasWrap');
+
+const view={x:0,y:0,scale:1};
+
+function resize(){
+  const dpr=window.devicePixelRatio||1;
+  const r=canvas.getBoundingClientRect();
+  canvas.width=Math.floor(r.width*dpr);
+  canvas.height=Math.floor(r.height*dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  dirty();
+}
+window.addEventListener('resize',resize);
+
+const W=()=>canvas.clientWidth;
+const H=()=>canvas.clientHeight;
+
+function s2w(pt){return{x:(pt.x-W()/2)/view.scale+view.x,y:(pt.y-H()/2)/view.scale+view.y};}
+function w2s(pt){return{x:(pt.x-view.x)*view.scale+W()/2,y:(pt.y-view.y)*view.scale+H()/2};}
+
+function setZoom(z,anchor=null){
+  const nz=clamp(z,0.15,4);
+  if(!anchor){view.scale=nz;dirty();return;}
+  const before=s2w(anchor);
+  view.scale=nz;
+  const after=s2w(anchor);
+  view.x+=before.x-after.x;
+  view.y+=before.y-after.y;
+  dirty();
+  document.getElementById('zoomRange').value=Math.round(nz*100);
+  document.getElementById('zoomLabel').textContent=Math.round(nz*100)+'%';
+  document.getElementById('zoomDisp').textContent=Math.round(nz*100)+'%';
+}
+
+function centerView(){view.x=0;view.y=0;setZoom(1);}
+
+// ─── Scene ────────────────────────────────────────────────────────────────────
+const scene={elements:[],meta:{smartMode:'none'}};
+
+const hist={undo:[],redo:[]};
+function hpush(){hist.undo.push(deepCopy(scene));if(hist.undo.length>80)hist.undo.shift();hist.redo.length=0;}
+function hApply(s){scene.elements=s.elements;scene.meta=s.meta;sel.clear();dirty();syncUI();}
+function doUndo(){const p=hist.undo.pop();if(!p)return;hist.redo.push(deepCopy(scene));hApply(p);}
+function doRedo(){const n=hist.redo.pop();if(!n)return;hist.undo.push(deepCopy(scene));hApply(n);}
+
+function addEl(e){scene.elements.push(e);return e;}
+function remById(id){scene.elements=scene.elements.filter(e=>e.id!==id);}
+function getEl(id){return scene.elements.find(e=>e.id===id);}
+function bringFront(ids){const keep=scene.elements.filter(e=>!ids.includes(e.id));const mv=scene.elements.filter(e=>ids.includes(e.id));scene.elements=keep.concat(mv);}
+function sendBack(ids){const keep=scene.elements.filter(e=>!ids.includes(e.id));const mv=scene.elements.filter(e=>ids.includes(e.id));scene.elements=mv.concat(keep);}
+
+// ─── Selection ────────────────────────────────────────────────────────────────
+const sel={ids:new Set(),hitHandle:null,clipboard:null};
+const selEls=()=>scene.elements.filter(e=>sel.ids.has(e.id));
+
+function elBounds(e){
+  if(e.type==='line'||e.type==='arrow'){const xs=e.pts.map(p=>p.x),ys=e.pts.map(p=>p.y);return{minX:Math.min(...xs),minY:Math.min(...ys),maxX:Math.max(...xs),maxY:Math.max(...ys)};}
+  if(e.type==='rect'){return{minX:Math.min(e.x,e.x+e.w),minY:Math.min(e.y,e.y+e.h),maxX:Math.max(e.x,e.x+e.w),maxY:Math.max(e.y,e.y+e.h)};}
+  if(e.type==='ellipse'){return{minX:e.x-e.rx,minY:e.y-e.ry,maxX:e.x+e.rx,maxY:e.y+e.ry};}
+  if(e.type==='pen'){const xs=e.pts.map(p=>p.x),ys=e.pts.map(p=>p.y);return{minX:Math.min(...xs),minY:Math.min(...ys),maxX:Math.max(...xs),maxY:Math.max(...ys)};}
+  if(e.type==='curve'){const pts=[e.p0,e.p1,e.p2,e.p3].filter(Boolean);const xs=pts.map(p=>p.x),ys=pts.map(p=>p.y);return{minX:Math.min(...xs),minY:Math.min(...ys),maxX:Math.max(...xs),maxY:Math.max(...ys)};}
+  if(e.type==='text'){return{minX:e.x,minY:e.y-20,maxX:e.x+120,maxY:e.y+6};}
+  if(e.type==='axis'){return{minX:e.ox,minY:e.oy-e.h,maxX:e.ox+e.w,maxY:e.oy};}
+  return null;
+}
+
+function selBounds(els){
+  if(!els.length)return null;
+  let mx=Infinity,my=Infinity,ax=-Infinity,ay=-Infinity;
+  for(const e of els){const b=elBounds(e);if(!b)continue;mx=Math.min(mx,b.minX);my=Math.min(my,b.minY);ax=Math.max(ax,b.maxX);ay=Math.max(ay,b.maxY);}
+  return mx===Infinity?null:{minX:mx,minY:my,maxX:ax,maxY:ay};
+}
+
+function hitTest(wp){
+  const tol=8/view.scale;
+  for(let i=scene.elements.length-1;i>=0;i--){
+    const e=scene.elements[i];if(e.locked)continue;
+    if(e.type==='line'||e.type==='arrow'){
+      const a=e.pts[0],b=e.pts.at(-1);
+      if(dist(wp,a)<tol)return{id:e.id,h:'a'};
+      if(dist(wp,b)<tol)return{id:e.id,h:'b'};
+      if(ptSegDist(wp,a,b)<tol)return{id:e.id,h:null};
+    }
+    if(e.type==='curve'){
+      const hs=[['p0',e.p0],['p1',e.p1],['p2',e.p2],['p3',e.p3]];
+      for(const[hn,p]of hs){if(p&&dist(wp,p)<tol)return{id:e.id,h:hn};}
+      const b=elBounds(e);if(b&&inBounds(wp,b,tol))return{id:e.id,h:null};
+    }
+    if(e.type==='rect'||e.type==='ellipse'){const b=elBounds(e);if(b&&inBounds(wp,b,tol))return{id:e.id,h:null};}
+    if(e.type==='pen'){
+      const b=elBounds(e);if(b&&inBounds(wp,b,tol))return{id:e.id,h:null};
+    }
+    if(e.type==='text'){const b=elBounds(e);if(b&&inBounds(wp,b,tol))return{id:e.id,h:null};}
+    if(e.type==='axis'){
+      // check near axes lines
+      const o={x:e.ox,y:e.oy},xe={x:e.ox+e.w,y:e.oy},ye={x:e.ox,y:e.oy-e.h};
+      if(ptSegDist(wp,o,xe)<tol)return{id:e.id,h:null};
+      if(ptSegDist(wp,o,ye)<tol)return{id:e.id,h:null};
+    }
+  }
+  return null;
+}
+
+function inBounds(p,b,pad=0){return p.x>=b.minX-pad&&p.x<=b.maxX+pad&&p.y>=b.minY-pad&&p.y<=b.maxY+pad;}
+
+// ─── Rendering ────────────────────────────────────────────────────────────────
+let needRender=true;
+function dirty(){needRender=true;}
+
+function dashPat(d){
+  if(d==='dash')return[10,7];
+  if(d==='dot')return[2,7];
+  if(d==='longdash')return[18,8];
+  return[];
+}
+
+function drawGrid(){
+  const showG=document.getElementById('showGrid').checked;
+  const w=W(),h=H();
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle='#0c1018';
+  ctx.fillRect(0,0,w,h);
+  if(!showG)return;
+
+  const step=document.getElementById('snapGrid').checked?Math.max(8,Math.round(24)):24;
+  const tl=s2w({x:0,y:0}),br=s2w({x:w,y:h});
+  const minor=step,major=step*5;
+  const sx0=Math.floor(tl.x/minor)*minor,sx1=Math.ceil(br.x/minor)*minor;
+  const sy0=Math.floor(tl.y/minor)*minor,sy1=Math.ceil(br.y/minor)*minor;
+
+  ctx.save();
+  for(let x=sx0;x<=sx1;x+=minor){
+    const sx=w2s({x,y:0}).x;
+    const isMaj=Math.abs(x%major)<0.5;
+    ctx.beginPath();
+    ctx.strokeStyle=isMaj?'rgba(37,45,61,0.9)':'rgba(22,28,41,0.8)';
+    ctx.lineWidth=isMaj?1:0.5;
+    ctx.moveTo(sx,0);ctx.lineTo(sx,h);ctx.stroke();
+  }
+  for(let y=sy0;y<=sy1;y+=minor){
+    const sy=w2s({x:0,y}).y;
+    const isMaj=Math.abs(y%major)<0.5;
+    ctx.beginPath();
+    ctx.strokeStyle=isMaj?'rgba(37,45,61,0.9)':'rgba(22,28,41,0.8)';
+    ctx.lineWidth=isMaj?1:0.5;
+    ctx.moveTo(0,sy);ctx.lineTo(w,sy);ctx.stroke();
+  }
+  // origin cross
+  const orig=w2s({x:0,y:0});
+  ctx.strokeStyle='rgba(79,142,247,0.12)';
+  ctx.lineWidth=1;
+  ctx.setLineDash([3,4]);
+  ctx.beginPath();ctx.moveTo(orig.x,0);ctx.lineTo(orig.x,h);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(0,orig.y);ctx.lineTo(w,orig.y);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+}
+
+function applyElStyle(e,ctx){
+  ctx.lineWidth=e.sw||2;
+  ctx.strokeStyle=e.stroke||'#e2e8f0';
+  ctx.setLineDash(dashPat(e.dash||'solid'));
+}
+
+function drawArrowHead(tip,from,size=12){
+  const ang=Math.atan2(tip.y-from.y,tip.x-from.x);
+  ctx.save();
+  ctx.setLineDash([]);
+  ctx.fillStyle=ctx.strokeStyle;
+  ctx.beginPath();
+  ctx.moveTo(tip.x,tip.y);
+  ctx.lineTo(tip.x-size*Math.cos(ang-Math.PI/6),tip.y-size*Math.sin(ang-Math.PI/6));
+  ctx.lineTo(tip.x-size*Math.cos(ang+Math.PI/6),tip.y-size*Math.sin(ang+Math.PI/6));
+  ctx.closePath();ctx.fill();
+  ctx.restore();
+}
+
+function drawLabelNear(text,wx,wy,stroke,fsize){
+  if(!text)return;
+  const s=w2s({x:wx,y:wy});
+  ctx.save();
+  ctx.setLineDash([]);
+  ctx.fillStyle=stroke||'#e2e8f0';
+  ctx.font=`${fsize||14}px 'IBM Plex Sans',sans-serif`;
+  ctx.fillText(text,s.x+8,s.y-6);
+  ctx.restore();
+}
+
+function drawEl(e,alpha=1){
+  ctx.save();
+  ctx.globalAlpha=alpha;
+  applyElStyle(e,ctx);
+
+  if(e.type==='axis'){
+    ctx.setLineDash([]);
+    ctx.strokeStyle='#e2e8f0';
+    ctx.lineWidth=2.5;
+    const o=w2s({x:e.ox,y:e.oy}),xe=w2s({x:e.ox+e.w,y:e.oy}),ye=w2s({x:e.ox,y:e.oy-e.h});
+    ctx.beginPath();ctx.moveTo(o.x,o.y);ctx.lineTo(xe.x,xe.y);ctx.stroke();
+    drawArrowHead(xe,o,10);
+    ctx.beginPath();ctx.moveTo(o.x,o.y);ctx.lineTo(ye.x,ye.y);ctx.stroke();
+    drawArrowHead(ye,o,10);
+    ctx.fillStyle='#8b9db8';
+    ctx.font="13px 'IBM Plex Sans',sans-serif";
+    ctx.fillText(e.labels?.x||'Quantity (Q)',xe.x-100,xe.y+20);
+    ctx.save();ctx.translate(ye.x-22,ye.y+100);ctx.rotate(-Math.PI/2);
+    ctx.fillText(e.labels?.y||'Price (P)',0,0);ctx.restore();
+    ctx.restore();return;
+  }
+
+  if(e.type==='line'||e.type==='arrow'){
+    const a=w2s(e.pts[0]),b=w2s(e.pts.at(-1));
+    ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+    if(e.type==='arrow')drawArrowHead(b,a,11);
+    const mx=(e.pts[0].x+e.pts.at(-1).x)/2,my=(e.pts[0].y+e.pts.at(-1).y)/2;
+    drawLabelNear(e.label,mx,my,e.stroke,e.fs);
+    ctx.restore();return;
+  }
+
+  if(e.type==='curve'){
+    const p0=w2s(e.p0),p1=w2s(e.p1),p2=w2s(e.p2),p3=w2s(e.p3);
+    ctx.beginPath();ctx.moveTo(p0.x,p0.y);ctx.bezierCurveTo(p1.x,p1.y,p2.x,p2.y,p3.x,p3.y);ctx.stroke();
+    drawLabelNear(e.label,e.p3.x,e.p3.y,e.stroke,e.fs);
+    // control handles (only when selected)
+    if(sel.ids.has(e.id)){
+      ctx.save();ctx.setLineDash([3,4]);ctx.strokeStyle='rgba(79,142,247,0.4)';ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(p0.x,p0.y);ctx.lineTo(p1.x,p1.y);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(p3.x,p3.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();
+      ctx.restore();
+    }
+    ctx.restore();return;
+  }
+
+  if(e.type==='rect'){
+    const a=w2s({x:e.x,y:e.y}),b=w2s({x:e.x+e.w,y:e.y+e.h});
+    const x=Math.min(a.x,b.x),y=Math.min(a.y,b.y),w=Math.abs(b.x-a.x),h=Math.abs(b.y-a.y);
+    if(e.fillOn){ctx.fillStyle=e.fill||'rgba(79,142,247,0.12)';ctx.fillRect(x,y,w,h);}
+    ctx.strokeRect(x,y,w,h);
+    ctx.restore();return;
+  }
+
+  if(e.type==='ellipse'){
+    const sx=w2s({x:e.x,y:e.y});
+    const rx=e.rx*view.scale,ry=e.ry*view.scale;
+    ctx.beginPath();ctx.ellipse(sx.x,sx.y,Math.max(1,rx),Math.max(1,ry),0,0,Math.PI*2);
+    if(e.fillOn){ctx.fillStyle=e.fill||'rgba(79,142,247,0.12)';ctx.fill();}
+    ctx.stroke();
+    ctx.restore();return;
+  }
+
+  if(e.type==='pen'){
+    const pts=e.pts.map(w2s);
+    if(pts.length<2){ctx.restore();return;}
+    ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+    for(let i=1;i<pts.length;i++){
+      if(i<pts.length-1){
+        const mx=(pts[i].x+pts[i+1].x)/2,my=(pts[i].y+pts[i+1].y)/2;
+        ctx.quadraticCurveTo(pts[i].x,pts[i].y,mx,my);
+      } else{ctx.lineTo(pts[i].x,pts[i].y);}
+    }
+    ctx.stroke();ctx.restore();return;
+  }
+
+  if(e.type==='text'){
+    const s=w2s({x:e.x,y:e.y});
+    ctx.setLineDash([]);
+    ctx.fillStyle=e.stroke||'#e2e8f0';
+    ctx.font=`${e.fs||14}px 'IBM Plex Sans',sans-serif`;
+    ctx.fillText(e.text||'',s.x,s.y);
+    ctx.restore();return;
+  }
+
+  ctx.restore();
+}
+
+function drawSelectionBox(){
+  const els=selEls();if(!els.length)return;
+  const b=selBounds(els);if(!b)return;
+  const tl=w2s({x:b.minX,y:b.minY}),br=w2s({x:b.maxX,y:b.maxY});
+  ctx.save();
+  ctx.setLineDash([5,4]);
+  ctx.strokeStyle='rgba(79,142,247,0.8)';
+  ctx.lineWidth=1.5;
+  ctx.strokeRect(tl.x-6,tl.y-6,br.x-tl.x+12,br.y-tl.y+12);
+  ctx.setLineDash([]);
+  const corners=[{x:tl.x-6,y:tl.y-6},{x:br.x+6,y:tl.y-6},{x:br.x+6,y:br.y+6},{x:tl.x-6,y:br.y+6}];
+  for(const c of corners){
+    ctx.fillStyle='#0c1018';ctx.strokeStyle='rgba(79,142,247,0.9)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.rect(c.x-4,c.y-4,8,8);ctx.fill();ctx.stroke();
+  }
+  // per-element handles
+  for(const e of els){
+    if(e.type==='line'||e.type==='arrow'){
+      drawHandle(w2s(e.pts[0]));drawHandle(w2s(e.pts.at(-1)));
+    }
+    if(e.type==='curve'){
+      ['p0','p1','p2','p3'].forEach(k=>{if(e[k])drawHandle(w2s(e[k]));});
+    }
+  }
+  ctx.restore();
+}
+
+function drawHandle(p){
+  ctx.save();
+  ctx.fillStyle='#0c1018';ctx.strokeStyle='rgba(79,142,247,0.9)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.restore();
+}
+
+function drawBoxPreview(){
+  if(!st.drawing||st.drawing.tool!=='box')return;
+  const a=st.drawing.start,b=st.drawing.cur;
+  if(!a||!b)return;
+  const sa=w2s(a),sb=w2s(b);
+  const x=Math.min(sa.x,sb.x),y=Math.min(sa.y,sb.y),w=Math.abs(sb.x-sa.x),h=Math.abs(sb.y-sa.y);
+  ctx.save();
+  ctx.strokeStyle='rgba(79,142,247,0.6)';
+  ctx.lineWidth=1;ctx.setLineDash([4,3]);
+  ctx.strokeRect(x,y,w,h);
+  ctx.fillStyle='rgba(79,142,247,0.04)';
+  ctx.fillRect(x,y,w,h);
+  ctx.restore();
+}
+
+function render(){
+  if(!needRender)return;
+  needRender=false;
+  drawGrid();
+  // ghost elements (shifted duplicates shown as transparent)
+  for(const e of scene.elements){
+    if(e.ghost)drawEl(e,0.28);
+  }
+  // normal elements
+  for(const e of scene.elements){
+    if(!e.ghost)drawEl(e,1);
+  }
+  // preview of current drawing
+  if(st.drawing?.preview)drawEl(st.drawing.preview,0.7);
+  drawSelectionBox();
+  drawBoxPreview();
+}
+
+function tick(){render();requestAnimationFrame(tick);}
+
+// ─── State ────────────────────────────────────────────────────────────────────
+const st={
+  tool:'select',
+  drawing:null,
+  panning:false,panStart:null,
+  spaceDown:false,
+  style:{stroke:'#e2e8f0',sw:2,dash:'solid',fill:'#4f8ef7',fillOn:false,fs:14},
+  label:'',
+};
+
+function getSnap(p){
+  if(!document.getElementById('snapGrid').checked)return p;
+  const step=24;
+  return{x:snapV(p.x,step),y:snapV(p.y,step)};
+}
+
+function snapToExisting(p){
+  const tol=12/view.scale;
+  let best=null;
+  for(const e of scene.elements){
+    if(e.type==='line'||e.type==='arrow'){
+      for(const pt of[e.pts[0],e.pts.at(-1)]){
+        const d=dist(p,pt);if(d<tol&&(!best||d<best.d))best={d,pt};
+      }
+    }
+    if(e.type==='curve'){
+      for(const k of['p0','p1','p2','p3']){if(e[k]){const d=dist(p,e[k]);if(d<tol&&(!best||d<best.d))best={d,pt:e[k]};}}
+    }
+    if(e.type==='axis'){
+      const ox={x:e.ox,y:e.oy};const d=dist(p,ox);if(d<tol&&(!best||d<best.d))best={d,pt:ox};
+    }
+  }
+  return best?{x:best.pt.x,y:best.pt.y}:p;
+}
+
+function resolveWorld(screenPt){
+  let w=s2w(screenPt);
+  w=snapToExisting(w);
+  w=getSnap(w);
+  return w;
+}
+
+// ─── Tools ────────────────────────────────────────────────────────────────────
+const TOOLS=['select','line','arrow','curve','rect','pen','text','erase'];
+
+function setTool(id){
+  st.tool=id;
+  document.querySelectorAll('[data-tool]').forEach(b=>{
+    b.classList.toggle('active',b.dataset.tool===id);
+  });
+  document.getElementById('toolDisp').textContent=id.toUpperCase();
+  const cursors={select:'select-cursor',pan:'grab-cursor',erase:'select-cursor'};
+  canvas.className=cursors[id]||'';
+}
+
+// ─── Pointer events ───────────────────────────────────────────────────────────
+function getPt(ev){const r=canvas.getBoundingClientRect();return{x:ev.clientX-r.left,y:ev.clientY-r.top};}
+
+canvas.addEventListener('pointerdown',onPD);
+canvas.addEventListener('pointermove',onPM);
+canvas.addEventListener('pointerup',onPU);
+canvas.addEventListener('pointercancel',onPU);
+
+function onPD(ev){
+  canvas.setPointerCapture(ev.pointerId);
+  const screen=getPt(ev);
+  const tool=st.spaceDown?'pan':st.tool;
+
+  if(tool==='pan'){
+    st.panning=true;st.panStart={screen,vx:view.x,vy:view.y};
+    canvas.className='grab-cursor';return;
+  }
+
+  const wp=resolveWorld(screen);
+
+  if(tool==='erase'){
+    const hit=hitTest(wp);
+    if(hit){hpush();remById(hit.id);refreshSmart();dirty();syncUI();}
+    return;
+  }
+
+  if(tool==='select'){
+    const hit=hitTest(wp);
+    if(hit){
+      if(!ev.shiftKey)sel.ids.clear();
+      sel.ids.add(hit.id);
+      sel.hitHandle=hit.h?{id:hit.id,h:hit.h}:null;
+      hpush();
+      st.drawing={tool:'move',start:wp,last:wp};
+      dirty();syncUI();
+    } else {
+      if(!ev.shiftKey)sel.ids.clear();
+      st.drawing={tool:'box',start:wp,cur:wp};
+      dirty();
+    }
+    return;
+  }
+
+  hpush();
+
+  if(tool==='text'){
+    const text=prompt('Label text:','');
+    if(text){addEl({id:uid(),type:'text',x:wp.x,y:wp.y,text,stroke:st.style.stroke,fs:st.style.fs||14});}
+    dirty();return;
+  }
+
+  if(tool==='line'||tool==='arrow'){
+    const e={id:uid(),type:tool,pts:[{...wp},{...wp}],stroke:st.style.stroke,sw:st.style.sw,dash:st.style.dash,label:st.label.trim()};
+    addEl(e);sel.ids.clear();sel.ids.add(e.id);
+    st.drawing={tool,eid:e.id,start:wp};dirty();return;
+  }
+
+  if(tool==='curve'){
+    const e={id:uid(),type:'curve',p0:{...wp},p1:{x:wp.x+80,y:wp.y-60},p2:{x:wp.x+160,y:wp.y-60},p3:{...wp},stroke:st.style.stroke,sw:st.style.sw,dash:st.style.dash,label:st.label.trim()};
+    addEl(e);sel.ids.clear();sel.ids.add(e.id);
+    st.drawing={tool,eid:e.id,start:wp};dirty();return;
+  }
+
+  if(tool==='rect'){
+    const e={id:uid(),type:'rect',x:wp.x,y:wp.y,w:1,h:1,stroke:st.style.stroke,sw:st.style.sw,dash:st.style.dash,fill:st.style.fill,fillOn:st.style.fillOn};
+    addEl(e);sel.ids.clear();sel.ids.add(e.id);
+    st.drawing={tool,eid:e.id,start:wp};dirty();return;
+  }
+
+  if(tool==='pen'){
+    const e={id:uid(),type:'pen',pts:[{...wp}],stroke:st.style.stroke,sw:st.style.sw,dash:st.style.dash};
+    addEl(e);sel.ids.clear();sel.ids.add(e.id);
+    st.drawing={tool,eid:e.id};dirty();return;
+  }
+}
+
+function onPM(ev){
+  const screen=getPt(ev);
+  // Update coord display
+  const wp0=s2w(screen);
+  document.getElementById('coordDisp').textContent=`${Math.round(wp0.x)}, ${Math.round(wp0.y)}`;
+
+  if(st.panning&&st.panStart){
+    const dx=(screen.x-st.panStart.screen.x)/view.scale;
+    const dy=(screen.y-st.panStart.screen.y)/view.scale;
+    view.x=st.panStart.vx-dx;view.y=st.panStart.vy-dy;
+    dirty();return;
+  }
+  if(!st.drawing)return;
+
+  const wp=resolveWorld(screen);
+
+  if(st.drawing.tool==='move'){
+    const dx=wp.x-st.drawing.last.x,dy=wp.y-st.drawing.last.y;
+    if(sel.hitHandle){
+      const e=getEl(sel.hitHandle.id);
+      if(e){
+        const h=sel.hitHandle.h;
+        if((e.type==='line'||e.type==='arrow')&&(h==='a'||h==='b')){
+          const idx=h==='a'?0:e.pts.length-1;
+          e.pts[idx].x+=dx;e.pts[idx].y+=dy;
+          // Smart live update: snap to crosshair
+          maybeCrosshairSnap(e,idx);
+        }
+        if(e.type==='curve'&&e[h]){e[h].x+=dx;e[h].y+=dy;}
+      }
+    } else {
+      for(const id of sel.ids){const e=getEl(id);if(e&&!e.locked)moveEl(e,dx,dy);}
+    }
+    st.drawing.last=wp;
+    refreshSmart();dirty();return;
+  }
+
+  if(st.drawing.tool==='box'){st.drawing.cur=wp;dirty();return;}
+
+  const el=getEl(st.drawing.eid);if(!el)return;
+
+  if(st.drawing.tool==='line'||st.drawing.tool==='arrow'){el.pts[1]={...wp};dirty();return;}
+  if(st.drawing.tool==='curve'){
+    el.p3={...wp};
+    const dx=el.p3.x-el.p0.x,dy=el.p3.y-el.p0.y;
+    el.p1={x:el.p0.x+dx*0.33,y:el.p0.y+dy*0.1};
+    el.p2={x:el.p0.x+dx*0.66,y:el.p0.y+dy*0.9};
+    dirty();return;
+  }
+  if(st.drawing.tool==='rect'){el.w=wp.x-st.drawing.start.x;el.h=wp.y-st.drawing.start.y;dirty();return;}
+  if(st.drawing.tool==='pen'){el.pts.push({...wp});dirty();return;}
+}
+
+function onPU(ev){
+  if(st.panning){st.panning=false;st.panStart=null;canvas.className=st.tool==='select'?'select-cursor':'';return;}
+  if(!st.drawing)return;
+
+  if(st.drawing.tool==='box'){
+    const a=st.drawing.start,b=st.drawing.cur;
+    if(a&&b){
+      const minX=Math.min(a.x,b.x),maxX=Math.max(a.x,b.x),minY=Math.min(a.y,b.y),maxY=Math.max(a.y,b.y);
+      for(const e of scene.elements){const b2=elBounds(e);if(b2&&b2.minX>=minX&&b2.maxX<=maxX&&b2.minY>=minY&&b2.maxY<=maxY)sel.ids.add(e.id);}
+    }
+    st.drawing=null;sel.hitHandle=null;syncUI();dirty();return;
+  }
+
+  const el=st.drawing.eid?getEl(st.drawing.eid):null;
+  if(el&&(el.type==='line'||el.type==='arrow')&&scene.meta.smartMode==='supplyDemand'){
+    const c=classifyLine(el);if(c)el.role=c;
+    updateSmartHelpers();
+    maybeLiveAutoLine(el);
+  } else if(el){
+    refreshSmart();
+    maybeLiveAutoLine(el);
+  }
+
+  st.drawing=null;sel.hitHandle=null;syncUI();dirty();
+}
+
+// ─── Wheel zoom (no Ctrl required) ────────────────────────────────────────────
+canvas.addEventListener('wheel',(ev)=>{
+  ev.preventDefault();
+  const factor=ev.deltaY<0?1.1:0.91;
+  setZoom(view.scale*factor,getPt(ev));
+},{passive:false});
+
+// ─── Smart mode helpers ───────────────────────────────────────────────────────
+function isHelper(e){return e.tags&&e.tags.includes('helper');}
+function removeHelpers(){scene.elements=scene.elements.filter(e=>!isHelper(e));}
+
+function getAxes(){
+  // Return axis origin or fallback
+  const ax=scene.elements.find(e=>e.type==='axis');
+  return ax?{ox:ax.ox,oy:ax.oy,w:ax.w,h:ax.h}:{ox:-320,oy:260,w:640,h:480};
+}
+
+function classifyLine(e){
+  if(e.type!=='line')return null;
+  const a=e.pts[0],b=e.pts.at(-1);
+  const dx=b.x-a.x,dy=b.y-a.y;
+  if(Math.abs(dx)<2)return'lras';
+  const slope=dy/dx;
+  if(slope>0.1)return'supply';
+  if(slope<-0.1)return'demand';
+  return null;
+}
+
+function updateSmartHelpers(){
+  const mode=scene.meta.smartMode;
+  removeHelpers();
+  if(mode==='supplyDemand')doSupplyDemandHelpers();
+  if(mode==='externality')doExternalityHelpers();
+  if(mode==='adas')doADASHelpers();
+}
+function refreshSmart(){updateSmartHelpers();}
+
+function addHelper(el){el.tags=['helper'];el.locked=true;return addEl(el);}
+
+function mkHLine(ax,ay,bx,by,label='',dash='dot'){
+  return addHelper({id:uid(),type:'line',pts:[{x:ax,y:ay},{x:bx,y:by}],stroke:'rgba(139,157,184,0.7)',sw:1.5,dash,label,fs:12});
+}
+
+function mkDot(x,y){
+  return addHelper({id:uid(),type:'ellipse',x,y,rx:5,ry:5,stroke:'#e2e8f0',sw:2,dash:'solid',fill:'#e2e8f0',fillOn:true});
+}
+
+function mkTxt(x,y,text,color='#8b9db8'){
+  return addHelper({id:uid(),type:'text',x,y,text,stroke:color,fs:13});
+}
+
+function doSupplyDemandHelpers(){
+  const lines=scene.elements.filter(e=>(e.type==='line'||e.type==='arrow')&&!isHelper(e));
+  let supply=null,demand=null;
+  for(const l of lines){
+    const c=l.role||classifyLine(l);
+    if(c==='supply'&&!supply)supply=l;
+    if(c==='demand'&&!demand)demand=l;
+  }
+  if(!supply||!demand)return;
+  const inter=lineIntersect(supply.pts[0],supply.pts.at(-1),demand.pts[0],demand.pts.at(-1));
+  if(!inter)return;
+  const ax=getAxes();
+  mkHLine(inter.x,ax.oy,inter.x,inter.y,'','dot');
+  mkHLine(ax.ox,inter.y,inter.x,inter.y,'','dot');
+  mkDot(inter.x,inter.y);
+  mkTxt(ax.ox-48,inter.y+4,'P*','#4f8ef7');
+  mkTxt(inter.x-6,ax.oy+20,'Q*','#4f8ef7');
+}
+
+function doExternalityHelpers(){
+  const lines=scene.elements.filter(e=>(e.type==='line'||e.type==='arrow')&&!isHelper(e));
+  const byLabel=n=>lines.find(l=>(l.label||'').toLowerCase()===n.toLowerCase());
+  const ax=getAxes();
+
+  function addIntersectHelpers(la,lb,labelText,color){
+    const a=la?.pts[0],b=la?.pts.at(-1),c=lb?.pts[0],d=lb?.pts.at(-1);
+    if(!a||!c)return;
+    const inter=lineIntersect(a,b,c,d);
+    if(!inter)return;
+    mkHLine(inter.x,ax.oy,inter.x,inter.y);
+    mkHLine(ax.ox,inter.y,inter.x,inter.y);
+    mkDot(inter.x,inter.y);
+    mkTxt(inter.x+8,inter.y-10,labelText,color);
+  }
+
+  addIntersectHelpers(byLabel('MSB'),byLabel('MSC'),'Social Optimum','#22c55e');
+  addIntersectHelpers(byLabel('MPB'),byLabel('MPC'),'Market Eq.','#f59e0b');
+  addIntersectHelpers(byLabel('MSC'),byLabel('MPB'),'Neg. Ext. Eq.','#ef4444');
+  addIntersectHelpers(byLabel('MSB'),byLabel('MPC'),'Pos. Ext. Eq.','#ef4444');
+
+  // Welfare triangle for negative externality (MSC vs D/MPB)
+  const msc=byLabel('MSC'),mpb=byLabel('MPB');
+  if(msc&&mpb){
+    const inter=lineIntersect(msc.pts[0],msc.pts.at(-1),mpb.pts[0],mpb.pts.at(-1));
+    if(inter){
+      // find market eq point (MPB=MPC)
+      const mpc=byLabel('MPC');
+      if(mpc){
+        const mEq=lineIntersect(mpb.pts[0],mpb.pts.at(-1),mpc.pts[0],mpc.pts.at(-1));
+        if(mEq){
+          // draw welfare loss polygon
+          const mscAtMkt=lineIntersect(msc.pts[0],msc.pts.at(-1),{x:mEq.x,y:ax.oy-1000},{x:mEq.x,y:ax.oy+1000});
+          if(mscAtMkt){
+            addHelper({id:uid(),type:'rect',x:Math.min(inter.x,mEq.x),y:Math.min(inter.y,mscAtMkt.y),
+              w:Math.abs(mEq.x-inter.x),h:Math.abs(mscAtMkt.y-inter.y),
+              stroke:'rgba(239,68,68,0.5)',sw:1,dash:'solid',fill:'rgba(239,68,68,0.1)',fillOn:true});
+            mkTxt(inter.x+(mEq.x-inter.x)*0.4,inter.y+(mscAtMkt.y-inter.y)*0.5,'Welfare loss','#ef4444');
+          }
+        }
+      }
+    }
+  }
+}
+
+function doADASHelpers(){
+  const lines=scene.elements.filter(e=>(e.type==='line'||e.type==='arrow')&&!isHelper(e));
+  const byLabel=n=>lines.find(l=>(l.label||'').toLowerCase()===n.toLowerCase());
+  const ad=byLabel('AD'),sras=byLabel('SRAS'),lras=byLabel('LRAS');
+  const ax=getAxes();
+
+  if(ad&&sras){
+    const inter=lineIntersect(ad.pts[0],ad.pts.at(-1),sras.pts[0],sras.pts.at(-1));
+    if(inter){
+      mkHLine(inter.x,ax.oy,inter.x,inter.y);
+      mkHLine(ax.ox,inter.y,inter.x,inter.y);
+      mkDot(inter.x,inter.y);
+      mkTxt(ax.ox-38,inter.y+4,'PL*','#4f8ef7');
+      mkTxt(inter.x-8,ax.oy+20,'Y*','#4f8ef7');
+      mkTxt(inter.x+10,inter.y-12,'Macro Eq.','#4f8ef7');
+    }
+    if(lras){
+      const lx=lras.pts[0].x;
+      if(Math.abs(lx-inter?.x||0)>10){
+        addHelper({id:uid(),type:'rect',x:Math.min(lx,inter.x),y:ax.oy-300,w:Math.abs(lx-inter.x),h:300,
+          stroke:'rgba(245,158,11,0.4)',sw:1,dash:'dash',fill:'rgba(245,158,11,0.05)',fillOn:true});
+        mkTxt(Math.min(lx,inter.x)+5,ax.oy-300+15,lx>inter.x?'Deflationary gap':'Inflationary gap','#f59e0b');
+      }
+    }
+  }
+}
+
+// Smart: live auto-crosshair when drawing lines in smart mode
+function maybeLiveAutoLine(el){
+  if(!el||scene.meta.smartMode==='none')return;
+  if(el.type!=='line'&&el.type!=='arrow')return;
+
+  const ax=getAxes();
+  const a=el.pts[0],b=el.pts.at(-1);
+  const dx=Math.abs(b.x-a.x),dy=Math.abs(b.y-a.y);
+  const tol=20/view.scale;
+  const isVertical=dx<dy*0.15;
+  const isHorizontal=dy<dx*0.15;
+
+  // If user drew a nearly-vertical line from the X-axis, auto-extend to hit curves
+  if(isVertical&&Math.abs(Math.min(a.y,b.y)-ax.oy)<tol*2){
+    const x=a.x;
+    // extend up to hit any non-helper line
+    let best=null;
+    for(const other of scene.elements){
+      if(other.id===el.id||isHelper(other))continue;
+      if(other.type!=='line'&&other.type!=='arrow')continue;
+      const inter=lineIntersect({x,y:ax.oy-2000},{x,y:ax.oy+2000},other.pts[0],other.pts.at(-1));
+      if(inter&&inter.y<ax.oy&&(!best||inter.y>best.y))best=inter;
+    }
+    if(best){
+      // Extend the line to hit curve
+      el.pts[1]={x:best.x,y:best.y};
+      // auto draw horizontal to price axis
+      const hid=uid();
+      addHelper({id:hid,type:'line',pts:[{x:ax.ox,y:best.y},{x:best.x,y:best.y}],
+        stroke:'rgba(139,157,184,0.7)',sw:1.5,dash:'dot',label:'',tags:['helper'],locked:true});
+      mkDot(best.x,best.y);
+      dirty();
+    }
+  }
+
+  // If user drew a nearly-horizontal line from the Y-axis, auto extend to hit curves
+  if(isHorizontal&&Math.abs(Math.min(a.x,b.x)-ax.ox)<tol*2){
+    const y=a.y;
+    let best=null;
+    for(const other of scene.elements){
+      if(other.id===el.id||isHelper(other))continue;
+      if(other.type!=='line'&&other.type!=='arrow')continue;
+      const inter=lineIntersect({x:ax.ox-2000,y},{x:ax.ox+2000,y},other.pts[0],other.pts.at(-1));
+      if(inter&&inter.x>ax.ox&&(!best||inter.x<best.x))best=inter;
+    }
+    if(best){
+      el.pts[1]={x:best.x,y:best.y};
+      addHelper({id:uid(),type:'line',pts:[{x:best.x,y:ax.oy},{x:best.x,y:best.y}],
+        stroke:'rgba(139,157,184,0.7)',sw:1.5,dash:'dot',label:'',tags:['helper'],locked:true});
+      mkDot(best.x,best.y);
+      dirty();
+    }
+  }
+}
+
+function maybeCrosshairSnap(el,ptIdx){
+  // When dragging an endpoint, if smart mode is on update helpers
+  refreshSmart();
+}
+
+// ─── Move element ─────────────────────────────────────────────────────────────
+function moveEl(e,dx,dy){
+  if(e.type==='line'||e.type==='arrow'){for(const p of e.pts){p.x+=dx;p.y+=dy;}return;}
+  if(e.type==='rect'){e.x+=dx;e.y+=dy;return;}
+  if(e.type==='ellipse'){e.x+=dx;e.y+=dy;return;}
+  if(e.type==='pen'){for(const p of e.pts){p.x+=dx;p.y+=dy;}return;}
+  if(e.type==='text'){e.x+=dx;e.y+=dy;return;}
+  if(e.type==='curve'){for(const k of['p0','p1','p2','p3'])if(e[k]){e[k].x+=dx;e[k].y+=dy;}return;}
+  if(e.type==='axis'){e.ox+=dx;e.oy+=dy;return;}
+}
+
+// ─── Shift / Animate ─────────────────────────────────────────────────────────
+async function shiftSelection(dir){
+  const els=selEls().filter(e=>!isHelper(e)&&e.type!=='axis');
+  if(!els.length)return;
+  const step=Number(document.getElementById('shiftStep').value)||48;
+  const animate=document.getElementById('animAnimate').checked;
+  const ghostMode=document.getElementById('animDuplicate').checked;
+
+  const delta={x:0,y:0};
+  if(dir==='up')delta.y=-step;
+  if(dir==='down')delta.y=step;
+  if(dir==='left')delta.x=-step;
+  if(dir==='right')delta.x=step;
+  if(dir==='upleft'){delta.x=-step;delta.y=-step;}
+  if(dir==='upright'){delta.x=step;delta.y=-step;}
+  if(dir==='downleft'){delta.x=-step;delta.y=step;}
+  if(dir==='downright'){delta.x=step;delta.y=step;}
+
+  hpush();
+
+  // Remove old ghosts
+  scene.elements=scene.elements.filter(e=>!e.ghost);
+
+  // Make ghost copies if enabled
+  if(ghostMode){
+    for(const e of els){
+      const ghost=deepCopy(e);
+      ghost.id=uid();
+      ghost.ghost=true;
+      ghost.stroke=e.stroke;
+      ghost.dash='dash';
+      ghost.sw=(e.sw||2)*0.7;
+      scene.elements.push(ghost);
+    }
+  }
+
+  const frames=animate?Math.max(6,Math.round(Number(document.getElementById('animSpeed').value)))*2:1;
+  const per={x:delta.x/frames,y:delta.y/frames};
+
+  for(let i=0;i<frames;i++){
+    for(const e of els)moveEl(e,per.x,per.y);
+    refreshSmart();dirty();
+    if(animate)await new Promise(r=>setTimeout(r,14));
+  }
+
+  dirty();
+}
+
+// ─── Keyboard ─────────────────────────────────────────────────────────────────
+window.addEventListener('keydown',ev=>{
+  if(ev.key===' ')st.spaceDown=true;
+  const meta=ev.ctrlKey||ev.metaKey;
+  const k=ev.key.toLowerCase();
+
+  if(meta&&k==='z'){ev.preventDefault();doUndo();return;}
+  if(meta&&(k==='y'||(ev.shiftKey&&k==='z'))){ev.preventDefault();doRedo();return;}
+  if(meta&&k==='d'){ev.preventDefault();dupSelection();return;}
+  if(meta&&k==='c'){ev.preventDefault();copySelection();return;}
+  if(meta&&k==='v'){ev.preventDefault();pasteSelection();return;}
+  if(meta&&k==='a'){ev.preventDefault();sel.ids.clear();scene.elements.forEach(e=>sel.ids.add(e.id));syncUI();dirty();return;}
+
+  if(k==='delete'||k==='backspace'){
+    if(sel.ids.size){hpush();for(const id of Array.from(sel.ids))remById(id);sel.ids.clear();refreshSmart();dirty();syncUI();}
+    return;
+  }
+
+  const map={v:'select',l:'line',a:'arrow',c:'curve',p:'pen',t:'text',e:'erase',r:'rect'};
+  if(map[k]&&!meta&&!ev.altKey){setTool(map[k]);return;}
+});
+window.addEventListener('keyup',ev=>{if(ev.key===' ')st.spaceDown=false;});
+
+function copySelection(){sel.clipboard=deepCopy(selEls());}
+function dupSelection(){copySelection();pasteSelection();}
+function pasteSelection(){
+  if(!sel.clipboard?.length)return;
+  hpush();sel.ids.clear();
+  for(const e of sel.clipboard){
+    const ne=deepCopy(e);ne.id=uid();ne.ghost=false;
+    moveEl(ne,30,30);addEl(ne);sel.ids.add(ne.id);
+  }
+  refreshSmart();dirty();syncUI();
+}
+
+// ─── Context Menu ─────────────────────────────────────────────────────────────
+const ctxMenu=document.getElementById('ctxMenu');
+
+canvas.addEventListener('contextmenu',ev=>{
+  ev.preventDefault();
+  const wp=resolveWorld(getPt(ev));
+  const hit=hitTest(wp);
+  if(hit)sel.ids.add(hit.id);
+  showCtxMenu(ev.clientX,ev.clientY);
+});
+
+function showCtxMenu(x,y){
+  ctxMenu.innerHTML='';
+  const add=(label,fn,red=false)=>{
+    const b=document.createElement('button');
+    b.textContent=label;if(red)b.style.color='var(--red)';
+    b.onclick=()=>{ctxMenu.style.display='none';fn();};
+    ctxMenu.appendChild(b);
+  };
+  const addSep=()=>{const s=document.createElement('div');s.className='sep';ctxMenu.appendChild(s);};
+
+  if(sel.ids.size){
+    add('Duplicate',dupSelection);
+    add('Bring to Front',()=>{hpush();bringFront(Array.from(sel.ids));dirty();});
+    add('Send to Back',()=>{hpush();sendBack(Array.from(sel.ids));dirty();});
+    addSep();
+    add('Delete selected',()=>{hpush();for(const id of Array.from(sel.ids))remById(id);sel.ids.clear();refreshSmart();dirty();syncUI();},true);
+  } else {
+    add('Undo',doUndo);add('Redo',doRedo);addSep();
+    add('Select All',()=>{scene.elements.forEach(e=>sel.ids.add(e.id));syncUI();dirty();});
+    add('Clear All',()=>{if(confirm('Clear entire canvas?')){hpush();scene.elements=[];sel.ids.clear();dirty();syncUI();}},true);
+  }
+
+  ctxMenu.style.display='block';
+  ctxMenu.style.left=x+'px';ctxMenu.style.top=y+'px';
+}
+
+document.addEventListener('click',()=>{ctxMenu.style.display='none';});
+
+// ─── Sync UI ──────────────────────────────────────────────────────────────────
+function syncUI(){
+  const els=selEls();
+  const info=document.getElementById('selInfo');
+  if(els.length===0){info.textContent='None';info.className='badge blue';}
+  else if(els.length===1){info.textContent='1 sel';info.className='badge green';}
+  else{info.textContent=`${els.length} sel`;info.className='badge yellow';}
+
+  if(els.length===1){
+    const e=els[0];
+    document.getElementById('stroke').value=e.stroke||'#e2e8f0';
+    document.getElementById('strokeW').value=e.sw||2;
+    document.getElementById('dash').value=e.dash||'solid';
+    document.getElementById('fill').value=e.fill||'#4f8ef7';
+    document.getElementById('label').value=e.label||e.text||'';
+    document.getElementById('fontSize').value=e.fs||14;
+  }
+}
+
+// ─── Style controls ───────────────────────────────────────────────────────────
+function applyStyleToSel(){
+  const els=selEls();if(!els.length)return;
+  const stroke=document.getElementById('stroke').value;
+  const sw=Number(document.getElementById('strokeW').value)||2;
+  const dash=document.getElementById('dash').value;
+  const fill=document.getElementById('fill').value;
+  const lbl=document.getElementById('label').value;
+  const fs=Number(document.getElementById('fontSize').value)||14;
+  for(const e of els){
+    e.stroke=stroke;e.sw=sw;e.dash=dash;e.fill=fill;e.fs=fs;
+    if(e.type==='text')e.text=lbl;else e.label=lbl;
+  }
+  // update global style for next elements
+  Object.assign(st.style,{stroke,sw,dash,fill,fs});
+  st.label=lbl;
+  dirty();
+}
+
+['stroke','strokeW','dash','fill','label','fontSize'].forEach(id=>{
+  document.getElementById(id).addEventListener('change',applyStyleToSel);
+  document.getElementById(id).addEventListener('input',applyStyleToSel);
+});
+
+// ─── Buttons ──────────────────────────────────────────────────────────────────
+document.getElementById('btnUndo').onclick=doUndo;
+document.getElementById('btnRedo').onclick=doRedo;
+document.getElementById('btnClear').onclick=()=>{if(confirm('Clear canvas?')){hpush();scene.elements=[];sel.ids.clear();dirty();syncUI();}};
+document.getElementById('btnFront').onclick=()=>{if(sel.ids.size){hpush();bringFront(Array.from(sel.ids));dirty();}};
+document.getElementById('btnBack').onclick=()=>{if(sel.ids.size){hpush();sendBack(Array.from(sel.ids));dirty();}};
+document.getElementById('btnDup').onclick=dupSelection;
+document.getElementById('btnDel').onclick=()=>{if(sel.ids.size){hpush();for(const id of Array.from(sel.ids))remById(id);sel.ids.clear();refreshSmart();dirty();syncUI();}};
+document.getElementById('centerBtn').onclick=centerView;
+
+document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>setTool(b.dataset.tool));
+document.querySelectorAll('[data-dir]').forEach(b=>b.onclick=()=>shiftSelection(b.dataset.dir));
+
+document.getElementById('smartMode').addEventListener('change',ev=>{scene.meta.smartMode=ev.target.value;refreshSmart();dirty();});
+document.getElementById('zoomRange').addEventListener('input',ev=>setZoom(Number(ev.target.value)/100));
+document.getElementById('showGrid').addEventListener('change',dirty);
+document.getElementById('snapGrid').addEventListener('change',dirty);
+
+// ─── Export ───────────────────────────────────────────────────────────────────
+document.getElementById('btnPNG').onclick=()=>{
+  render();
+  const link=document.createElement('a');
+  link.download='econ-graph.png';link.href=canvas.toDataURL();link.click();
+};
+document.getElementById('btnJSON').onclick=()=>{
+  const b=new Blob([JSON.stringify(scene,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(b);const a=document.createElement('a');
+  a.href=url;a.download='econ-graph.json';a.click();URL.revokeObjectURL(url);
+};
+document.getElementById('btnSVG').onclick=()=>{exportSVG();};
+document.getElementById('importJSON').onchange=ev=>{
+  const f=ev.target.files?.[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{try{const d=JSON.parse(r.result);if(!d?.elements)throw new Error('Bad format');
+    hpush();scene.elements=d.elements;scene.meta=d.meta||scene.meta;sel.ids.clear();refreshSmart();dirty();syncUI();
+  }catch(e){alert('Import failed: '+e.message);}};
+  r.readAsText(f);ev.target.value='';
+};
+
+function exportSVG(){
+  const w=W(),h=H();
+  let s=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="#0c1018"/>`;
+  const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  for(const e of scene.elements){
+    const dp=dashPat(e.dash||'solid');const da=dp.length?`stroke-dasharray="${dp.join(',')}"`:'';
+    if(e.type==='axis'){
+      const o=w2s({x:e.ox,y:e.oy}),xe=w2s({x:e.ox+e.w,y:e.oy}),ye=w2s({x:e.ox,y:e.oy-e.h});
+      s+=`<line x1="${o.x}" y1="${o.y}" x2="${xe.x}" y2="${xe.y}" stroke="#e2e8f0" stroke-width="2.5"/>`;
+      s+=`<line x1="${o.x}" y1="${o.y}" x2="${ye.x}" y2="${ye.y}" stroke="#e2e8f0" stroke-width="2.5"/>`;
+      s+=`<text x="${xe.x-100}" y="${xe.y+18}" fill="#8b9db8" font-size="13" font-family="system-ui">${esc(e.labels?.x||'Quantity')}</text>`;
+      continue;
+    }
+    if(e.type==='line'||e.type==='arrow'){
+      const a=w2s(e.pts[0]),b=w2s(e.pts.at(-1));
+      s+=`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="${esc(e.stroke||'#e2e8f0')}" stroke-width="${e.sw||2}" ${da}/>`;
+      if(e.label){const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;s+=`<text x="${mx+8}" y="${my-6}" fill="${esc(e.stroke||'#e2e8f0')}" font-size="13" font-family="system-ui">${esc(e.label)}</text>`;}
+      continue;
+    }
+    if(e.type==='curve'){
+      const p0=w2s(e.p0),p1=w2s(e.p1),p2=w2s(e.p2),p3=w2s(e.p3);
+      s+=`<path d="M${p0.x},${p0.y}C${p1.x},${p1.y},${p2.x},${p2.y},${p3.x},${p3.y}" fill="none" stroke="${esc(e.stroke||'#e2e8f0')}" stroke-width="${e.sw||2}" ${da}/>`;
+      if(e.label)s+=`<text x="${p3.x+8}" y="${p3.y-6}" fill="${esc(e.stroke||'#e2e8f0')}" font-size="13" font-family="system-ui">${esc(e.label)}</text>`;
+      continue;
+    }
+    if(e.type==='text'){const p=w2s({x:e.x,y:e.y});s+=`<text x="${p.x}" y="${p.y}" fill="${esc(e.stroke||'#e2e8f0')}" font-size="${e.fs||14}" font-family="system-ui">${esc(e.text||'')}</text>`;continue;}
+  }
+  s+='</svg>';
+  const blob=new Blob([s],{type:'image/svg+xml'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');
+  a.href=url;a.download='econ-graph.svg';a.click();URL.revokeObjectURL(url);
+}
+
+// ─── Templates ────────────────────────────────────────────────────────────────
+function clearScene(){scene.elements=[];sel.ids.clear();}
+
+function defaultAxes(lx='Quantity (Q)',ly='Price (P)'){
+  return addEl({id:uid(),type:'axis',ox:-320,oy:260,w:660,h:500,labels:{x:lx,y:ly},locked:false});
+}
+
+function mk(type,props){return addEl({id:uid(),type,...props});}
+
+function mkLine(ax,ay,bx,by,label,stroke='#e2e8f0',sw=2.5,dash='solid'){
+  return mk('line',{pts:[{x:ax,y:ay},{x:bx,y:by}],label,stroke,sw,dash});
+}
+
+function mkCurve(p0,p1,p2,p3,label,stroke='#e2e8f0',sw=2.5){
+  return mk('curve',{p0,p1,p2,p3,label,stroke,sw,dash:'solid'});
+}
+
+function tmpl_blank(){clearScene();defaultAxes();centerView();}
+
+function tmpl_supplyDemand(){
+  clearScene();defaultAxes();
+  mkLine(-240,-140,240,200,'D').role='demand';
+  mkLine(-220,200,240,-140,'S').role='supply';
+  scene.meta.smartMode='supplyDemand';
+  document.getElementById('smartMode').value='supplyDemand';
+  updateSmartHelpers();centerView();
+}
+
+function tmpl_ppf(){
+  clearScene();defaultAxes('Consumer goods','Capital goods');
+  // PPF curves correctly: origin bottom-left, curve bows OUTWARD (convex to origin)
+  // When x-axis=consumer goods, y-axis=capital goods, PPF slopes downward and bows OUT
+  mkCurve({x:-280,y:-240},{x:-200,y:-180},{x:120,y:100},{x:300,y:220},'PPF');
+  // Point inside (inefficient)
+  mk('ellipse',{x:0,y:20,rx:5,ry:5,stroke:'#f59e0b',sw:2,dash:'solid',fill:'#f59e0b',fillOn:true});
+  mk('text',{x:8,y:20,text:'Inefficient',stroke:'#f59e0b',fs:12});
+  // Growth PPF
+  mkCurve({x:-300,y:-280},{x:-210,y:-210},{x:150,y:130},{x:330,y:260},'PPF₂ (growth)','#4f8ef7',2);
+  centerView();
+}
+
+function tmpl_elasticity(){
+  clearScene();defaultAxes();
+  const ax=getAxes();
+  // Relatively elastic (shallow slope)
+  mkLine(ax.ox+60,ax.oy-300,ax.ox+480,ax.oy-60,'Elastic (PED>1)','#4f8ef7');
+  // Relatively inelastic (steep slope)
+  mkLine(ax.ox+180,ax.oy-320,ax.ox+280,ax.oy-40,'Inelastic (PED<1)','#22c55e');
+  // Perfectly inelastic (vertical)
+  mkLine(ax.ox+420,ax.oy-340,ax.ox+420,ax.oy-20,'Perfectly inelastic (PED=0)','#ef4444',2,'dash');
+  // Perfectly elastic (horizontal)
+  mkLine(ax.ox+40,ax.oy-180,ax.ox+500,ax.oy-180,'Perfectly elastic (PED=∞)','#f59e0b',2,'dot');
+  centerView();
+}
+
+function tmpl_externalityNeg(){
+  clearScene();defaultAxes('Output (Q)','Costs / Benefits');
+  mkLine(-240,200,240,-120,'MPC','#22c55e').role='supply';
+  mkLine(-220,170,260,-160,'MSC','#ef4444',2,'dash');
+  mkLine(-240,-100,240,200,'MPB = MSB','#4f8ef7').role='demand';
+  scene.meta.smartMode='externality';
+  document.getElementById('smartMode').value='externality';
+  updateSmartHelpers();centerView();
+}
+
+function tmpl_externalityPos(){
+  clearScene();defaultAxes('Output (Q)','Costs / Benefits');
+  mkLine(-240,200,240,-120,'MPC = MSC','#ef4444').role='supply';
+  mkLine(-240,-100,240,200,'MPB','#4f8ef7').role='demand';
+  mkLine(-260,-150,220,150,'MSB','#22c55e',2,'dash');
+  scene.meta.smartMode='externality';
+  document.getElementById('smartMode').value='externality';
+  updateSmartHelpers();centerView();
+}
+
+function tmpl_taxSubsidy(){
+  clearScene();defaultAxes();
+  mkLine(-240,-120,240,200,'D').role='demand';
+  mkLine(-230,200,240,-140,'S₁').role='supply';
+  mkLine(-190,160,280,-180,'S₂ (+ tax)','#ef4444',2,'dash');
+  scene.meta.smartMode='supplyDemand';
+  document.getElementById('smartMode').value='supplyDemand';
+  updateSmartHelpers();centerView();
+}
+
+function tmpl_priceControls(){
+  clearScene();defaultAxes();
+  mkLine(-240,-120,240,200,'D').role='demand';
+  mkLine(-230,200,240,-140,'S').role='supply';
+  const ax=getAxes();
+  mkLine(ax.ox+20,ax.oy-300,ax.ox+600,ax.oy-300,'Price ceiling (Pmax)','#ef4444',2,'dash');
+  mkLine(ax.ox+20,ax.oy-100,ax.ox+600,ax.oy-100,'Price floor (Pmin)','#22c55e',2,'dash');
+  scene.meta.smartMode='supplyDemand';
+  document.getElementById('smartMode').value='supplyDemand';
+  updateSmartHelpers();centerView();
+}
+
+function tmpl_monopoly(){
+  clearScene();defaultAxes('Output (Q)','Cost / Revenue (£)');
+  const ax=getAxes();
+  const ox=ax.ox,oy=ax.oy;
+  // AR = Demand (downward slope)
+  mkLine(ox+60,oy-340,ox+540,oy-60,'AR = D','#4f8ef7');
+  // MR: same starting y-intercept, twice the slope (hits x-axis at half the quantity)
+  // AR: from (ox+60, oy-340) to (ox+540, oy-60) → slope = (oy-60-(oy-340))/(540-60) = 280/480
+  // MR starts same intercept but double slope → hits x-axis at ox+60 + 240 = ox+300, then continues down
+  mkLine(ox+60,oy-340,ox+300,oy-60,'MR','#ef4444',2,'dash');
+  // Extend MR below into negative area to show Nike tick shape
+  mkLine(ox+300,oy-60,ox+540,oy+120,'','#ef4444',2,'dash');
+
+  // MC (U-shaped via curve going down then up)
+  mkCurve({x:ox+80,y:oy-80},{x:ox+200,y:oy-260},{x:ox+340,y:oy-260},{x:ox+520,y:oy-380},'MC','#22c55e');
+  // AC (U-shaped, above MC at low Q, below at high Q in theory but simplified)
+  mkCurve({x:ox+80,y:oy-140},{x:ox+200,y:oy-310},{x:ox+360,y:oy-290},{x:ox+520,y:oy-330},'AC','#f59e0b',2);
+  centerView();
+}
+
+function tmpl_monopolyProfit(){
+  clearScene();defaultAxes('Output (Q)','Cost / Revenue (£)');
+  const ax=getAxes();
+  const ox=ax.ox,oy=ax.oy;
+  mkLine(ox+60,oy-340,ox+540,oy-60,'AR = D','#4f8ef7');
+  mkLine(ox+60,oy-340,ox+300,oy-60,'MR','#ef4444',2,'dash');
+  mkLine(ox+300,oy-60,ox+540,oy+120,'','#ef4444',2,'dash');
+  mkCurve({x:ox+80,y:oy-80},{x:ox+200,y:oy-260},{x:ox+340,y:oy-260},{x:ox+520,y:oy-380},'MC','#22c55e');
+  mkCurve({x:ox+80,y:oy-140},{x:ox+200,y:oy-310},{x:ox+360,y:oy-290},{x:ox+520,y:oy-330},'AC','#f59e0b',2);
+  // Profit-maximising output: MC=MR → at ox+300
+  // Approximate MC=MR intersection
+  const qStar=ox+220,pAR=oy-220,pAC=oy-280;
+  // Profit box
+  mk('rect',{x:qStar-220,y:pAC,w:220,h:Math.abs(pAC-pAR),stroke:'rgba(79,142,247,0.5)',sw:1.5,dash:'dash',fill:'rgba(79,142,247,0.1)',fillOn:true});
+  mkHelper_txt(ox+60,pAR+30,'Supernormal\nProfit','#4f8ef7');
+  // dotted down to Q and across to P
+  mkLine(qStar,oy,qStar,pAR,'Q*','#8b9db8',1,'dot');
+  mkLine(ox,pAR,qStar,pAR,'P*','#8b9db8',1,'dot');
+  mkLine(ox,pAC,qStar,pAC,'AC','#8b9db8',1,'dot');
+  centerView();
+}
+
+function mkHelper_txt(x,y,text,color){
+  return addEl({id:uid(),type:'text',x,y,text,stroke:color||'#e2e8f0',fs:12});
+}
+
+function tmpl_kinkDemand(){
+  clearScene();defaultAxes('Output (Q)','Price (P)');
+  const ax=getAxes();
+  const ox=ax.ox,oy=ax.oy;
+  // Kinked demand: elastic above kink, inelastic below
+  const kinkX=ox+260,kinkY=oy-220;
+  mkLine(ox+60,oy-360,kinkX,kinkY,'D (elastic above kink)','#4f8ef7');
+  mkLine(kinkX,kinkY,ox+500,oy-60,'D (inelastic below kink)','#4f8ef7');
+  // MR with gap
+  // elastic section MR
+  mkLine(ox+60,oy-360,ox+240,oy-80,'MR','#ef4444',2,'dash');
+  // gap (MR is discontinuous at kink)
+  mkLine(ox+240,oy-80+120,ox+460,oy+80,'','#ef4444',2,'dash');
+  mkLine(kinkX,oy,kinkX,kinkY,'Q*','#8b9db8',1,'dot');
+  mkLine(ox,kinkY,kinkX,kinkY,'P*','#8b9db8',1,'dot');
+  mk('ellipse',{x:kinkX,y:kinkY,rx:5,ry:5,stroke:'#e2e8f0',sw:2,fill:'#e2e8f0',fillOn:true});
+  mkHelper_txt(kinkX+10,kinkY-15,'Kink','#f59e0b');
+  mkHelper_txt(ox+248,oy-80+60,'MR gap','#8b9db8');
+  centerView();
+}
+
+function tmpl_monopsony(){
+  clearScene();defaultAxes('Labour (Q)','Wage / Cost (£)');
+  const ax=getAxes();
+  const ox=ax.ox,oy=ax.oy;
+  // Supply of labour = ACL (average cost of labour, upward slope)
+  mkLine(ox+60,oy-60,ox+480,oy-300,'ACL = S of Labour','#22c55e');
+  // MCL steeper (above ACL)
+  mkLine(ox+60,oy-60,ox+480,oy-440,'MCL (marginal cost of labour)','#ef4444',2,'dash');
+  // MRPL (demand for labour, downward)
+  mkLine(ox+80,oy-320,ox+480,oy-60,'MRPL (demand)','#4f8ef7');
+  // Monopsony eq: MCL=MRPL
+  const inter=lineIntersect({x:ox+60,y:oy-60},{x:ox+480,y:oy-440},{x:ox+80,y:oy-320},{x:ox+480,y:oy-60});
+  if(inter){
+    mkLine(inter.x,oy,inter.x,inter.y,'Qm','#8b9db8',1,'dot');
+    // wage paid = ACL at Qm
+    const aclY=oy-60+(inter.x-(ox+60))/(480-60)*(-300+60);
+    mkLine(ox,aclY,inter.x,aclY,'Wm (wage paid)','#8b9db8',1,'dot');
+    mkLine(ox,inter.y,inter.x,inter.y,'MCL=MRPL','#8b9db8',1,'dot');
+    // Exploitation area
+    mk('rect',{x:ox,y:aclY,w:inter.x-ox,h:inter.y-aclY,stroke:'rgba(239,68,68,0.4)',sw:1,dash:'dash',fill:'rgba(239,68,68,0.08)',fillOn:true});
+    mkHelper_txt(ox+20,aclY+(inter.y-aclY)*0.5,'Monopsony\nexploitation','#ef4444');
+  }
+  centerView();
+}
+
+function tmpl_bufferStock(){
+  clearScene();defaultAxes('Quantity (Q)','Price (P)');
+  const ax=getAxes();
+  const ox=ax.ox,oy=ax.oy;
+  mkLine(ox+60,oy-300,ox+500,oy-60,'D','#4f8ef7').role='demand';
+  mkLine(ox+60,oy-60,ox+480,oy-340,'S','#22c55e').role='supply';
+  // Floor and ceiling
+  mkLine(ox+20,oy-200,ox+560,oy-200,'Floor (Pmin)','#f59e0b',2,'dash');
+  mkLine(ox+20,oy-300,ox+560,oy-300,'Ceiling (Pmax)','#ef4444',2,'dash');
+  // Buffer band highlight
+  mk('rect',{x:ox,y:oy-300,w:560,h:100,stroke:'rgba(79,142,247,0.2)',sw:0,dash:'solid',fill:'rgba(79,142,247,0.06)',fillOn:true});
+  mkHelper_txt(ox+20,oy-250,'Buffer band','#4f8ef7');
+  updateSmartHelpers();centerView();
+}
+
+function tmpl_adas(){
+  clearScene();defaultAxes('Real Output (Y)','Price Level (PL)');
+  mkLine(-240,-120,240,200,'AD','#4f8ef7').role='demand';
+  mkLine(-220,200,240,-160,'SRAS','#22c55e').role='supply';
+  mkLine(80,240,80,-240,'LRAS','#f59e0b',2,'dash');
+  scene.meta.smartMode='adas';
+  document.getElementById('smartMode').value='adas';
+  updateSmartHelpers();centerView();
+}
+
+function tmpl_phillips(){
+  clearScene();defaultAxes('Unemployment (%)','Inflation (%)');
+  mkCurve({x:-260,y:-180},{x:-100,y:200},{x:100,y:220},{x:280,y:180},'Short-run Phillips');
+  mkLine(-60,-220,-60,240,'NAIRU / LRPC','#f59e0b',2,'dash');
+  centerView();
+}
+
+function tmpl_lorenz(){
+  clearScene();defaultAxes('Cumulative % of population','Cumulative % of income');
+  mkLine(-280,240,280,-240,'Line of equality','#22c55e',2,'dash');
+  mkCurve({x:-280,y:240},{x:-160,y:200},{x:40,y:-80},{x:280,y:-240},'Lorenz curve');
+  centerView();
+}
+
+function tmpl_multiplier(){
+  clearScene();defaultAxes('National Income (Y)','Injections / Withdrawals (£)');
+  const ax=getAxes();
+  const ox=ax.ox,oy=ax.oy;
+  // 45-degree line
+  mkLine(ox,oy,ox+500,oy-500,'45° line','#8b9db8',1.5,'dot');
+  // Initial AE
+  mkLine(ox+40,oy-80,ox+460,oy-380,'AE₁','#4f8ef7');
+  // Shifted AE (increase in investment/G)
+  mkLine(ox+40,oy-140,ox+460,oy-440,'AE₂','#22c55e',2,'dash');
+  // Equilibria
+  mkLine(ox+180,oy,ox+180,oy-180,'Y₁','#8b9db8',1,'dot');
+  mkLine(ox+280,oy,ox+280,oy-280,'Y₂','#8b9db8',1,'dot');
+  mkHelper_txt(ox+185,oy+20,'Y₁','#8b9db8');
+  mkHelper_txt(ox+285,oy+20,'Y₂','#8b9db8');
+  // Multiplier arrow showing amplified change
+  mk('arrow',{pts:[{x:ox+180,y:oy-240},{x:ox+280,y:oy-240}],stroke:'#f59e0b',sw:2,dash:'solid',label:'Multiplier effect'});
+  centerView();
+}
+
+const TMPL_MAP={
+  blank:tmpl_blank,supplyDemand:tmpl_supplyDemand,ppf:tmpl_ppf,
+  elasticity:tmpl_elasticity,externalityNeg:tmpl_externalityNeg,
+  externalityPos:tmpl_externalityPos,taxSubsidy:tmpl_taxSubsidy,
+  priceControls:tmpl_priceControls,monopoly:tmpl_monopoly,
+  monopolyProfit:tmpl_monopolyProfit,kinkDemand:tmpl_kinkDemand,
+  monopsony:tmpl_monopsony,bufferStock:tmpl_bufferStock,
+  adas:tmpl_adas,phillips:tmpl_phillips,lorenz:tmpl_lorenz,multiplier:tmpl_multiplier
+};
+
+document.querySelectorAll('[data-tmpl]').forEach(b=>{
+  b.onclick=()=>{hpush();const fn=TMPL_MAP[b.dataset.tmpl];if(fn)fn();refreshSmart();dirty();syncUI();};
+});
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+function init(){
+  setTool('select');
+  tmpl_blank();
+  resize();
+  tick();
+  syncUI();
+
+  // Fix tmpl_phillips curve (it uses old point syntax)
+  // Already fixed in template definition above
+}
+
+init();
+})();
+</script>
+</body>
+</html>
