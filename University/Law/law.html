@@ -22,55 +22,144 @@
     🌙
   </button>
   <!-- Header (Logo at the top) -->
-  <div class="absolute top-6 left-1/2 transform -translate-x-1/2 text-center">
+  <div class="pt-6 text-center">
     <a href="../../University.html" class="hover:underline">
       <h1 class="text-3xl font-bold">Freescan - University</h1>
     </a>
     <p class="text-sm">Free hosting for Textbooks and Resources</p>
   </div>
 
+  <!-- Breadcrumb -->
+  <div class="mt-6 text-sm opacity-70">
+    <a href="../../index.html" class="hover:underline">Home</a>
+    <span class="mx-1">/</span>
+    <a href="../../University.html" class="hover:underline">University</a>
+    <span class="mx-1">/</span>
+    <span>Law</span>
+  </div>
+
   <!-- Law Title -->
-  <div class="mt-32 text-center max-w-3xl px-4">
-    <h2 class="text-4xl font-bold mb-10">Law</h2>
+  <div class="mt-6 text-center max-w-4xl w-full px-4">
+    <h2 class="text-4xl font-bold mb-2">Law</h2>
+    <p class="text-sm opacity-70 mb-4">7 textbooks across 4 topics</p>
+
+    <div class="mb-10 text-sm text-left px-4 py-3 rounded-lg border border-black/20 dark:border-white/30 bg-yellow-50 dark:bg-yellow-900/20">
+      ⚠️ <strong>Disclaimer:</strong> these textbooks may not be the exact edition used on your course and could be an older edition. Always check against your reading list before relying on them.
+    </div>
 
     <!-- Contract -->
-    <div class="mb-10">
-      <h3 class="text-2xl font-semibold mb-4">Contract</h3>
-      <div class="grid grid-cols-1 gap-4">
-        <a href="https://pub-7d14748e2eb2471097bca3aa61d93ca7.r2.dev/Law%20Textbooks/Contract/A%20casebook%20on%20contract%20-%20Andrew%20Burrows.pdf" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">A Casebook on Contract &mdash; Andrew Burrows</a>
-        <a href="https://pub-7d14748e2eb2471097bca3aa61d93ca7.r2.dev/Law%20Textbooks/Contract/Contract%20Law%20-%20Ewan%20McKendrick.pdf" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">Contract Law &mdash; Ewan McKendrick</a>
-        <a href="https://pub-7d14748e2eb2471097bca3aa61d93ca7.r2.dev/Law%20Textbooks/Contract/The%20Law%20of%20Contract-%20Janet%20O'Sullivan%2C%20Jonathan%20Hilliard.pdf" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">The Law of Contract &mdash; Janet O'Sullivan &amp; Jonathan Hilliard</a>
+    <section class="mb-14 text-left">
+      <h3 class="text-xl font-semibold mb-5 pl-3 border-l-4 border-blue-500">Contract</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+        <div class="flex items-start gap-4 p-4 border border-black/10 dark:border-white/20 rounded-lg hover:shadow-lg hover:-translate-y-0.5 transition">
+          <img src="https://covers.openlibrary.org/b/id/2985669-L.jpg" alt="Cover of A Casebook on Contract" loading="lazy"
+            class="w-20 h-28 object-cover rounded shadow flex-shrink-0 bg-gray-100 dark:bg-gray-800"
+            onerror="this.outerHTML='&lt;div class=&quot;w-20 h-28 flex-shrink-0 rounded shadow bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-3xl&quot;&gt;📘&lt;/div&gt;'">
+          <div class="flex-1 flex flex-col min-h-28">
+            <h4 class="font-semibold leading-snug">A Casebook on Contract</h4>
+            <p class="text-sm opacity-70 mb-3">Andrew Burrows</p>
+            <a href="https://pub-7d14748e2eb2471097bca3aa61d93ca7.r2.dev/Law%20Textbooks/Contract/A%20casebook%20on%20contract%20-%20Andrew%20Burrows.pdf" class="mt-auto inline-flex items-center gap-1 px-4 py-2 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition text-sm self-start">Open PDF →</a>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4 p-4 border border-black/10 dark:border-white/20 rounded-lg hover:shadow-lg hover:-translate-y-0.5 transition">
+          <img src="https://covers.openlibrary.org/b/id/9336244-L.jpg" alt="Cover of Contract Law" loading="lazy"
+            class="w-20 h-28 object-cover rounded shadow flex-shrink-0 bg-gray-100 dark:bg-gray-800"
+            onerror="this.outerHTML='&lt;div class=&quot;w-20 h-28 flex-shrink-0 rounded shadow bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-3xl&quot;&gt;📘&lt;/div&gt;'">
+          <div class="flex-1 flex flex-col min-h-28">
+            <h4 class="font-semibold leading-snug">Contract Law</h4>
+            <p class="text-sm opacity-70 mb-3">Ewan McKendrick</p>
+            <a href="https://pub-7d14748e2eb2471097bca3aa61d93ca7.r2.dev/Law%20Textbooks/Contract/Contract%20Law%20-%20Ewan%20McKendrick.pdf" class="mt-auto inline-flex items-center gap-1 px-4 py-2 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition text-sm self-start">Open PDF →</a>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4 p-4 border border-black/10 dark:border-white/20 rounded-lg hover:shadow-lg hover:-translate-y-0.5 transition">
+          <img src="https://covers.openlibrary.org/b/id/13058501-L.jpg" alt="Cover of The Law of Contract" loading="lazy"
+            class="w-20 h-28 object-cover rounded shadow flex-shrink-0 bg-gray-100 dark:bg-gray-800"
+            onerror="this.outerHTML='&lt;div class=&quot;w-20 h-28 flex-shrink-0 rounded shadow bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-3xl&quot;&gt;📘&lt;/div&gt;'">
+          <div class="flex-1 flex flex-col min-h-28">
+            <h4 class="font-semibold leading-snug">The Law of Contract</h4>
+            <p class="text-sm opacity-70 mb-3">Janet O'Sullivan &amp; Jonathan Hilliard</p>
+            <a href="https://pub-7d14748e2eb2471097bca3aa61d93ca7.r2.dev/Law%20Textbooks/Contract/The%20Law%20of%20Contract-%20Janet%20O'Sullivan%2C%20Jonathan%20Hilliard.pdf" class="mt-auto inline-flex items-center gap-1 px-4 py-2 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition text-sm self-start">Open PDF →</a>
+          </div>
+        </div>
+
       </div>
-    </div>
+    </section>
 
     <!-- Public -->
-    <div class="mb-10">
-      <h3 class="text-2xl font-semibold mb-4">Public</h3>
-      <div class="grid grid-cols-1 gap-4">
-        <a href="https://pub-7d14748e2eb2471097bca3aa61d93ca7.r2.dev/Law%20Textbooks/Public/Constitutional%20and%20Administrative%20Law%20-%20Roger%20Masterman%2C%20Colin%20R%20G%20Murray%20-%202nd%20New%20edition%20PT-%202018.pdf" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">Constitutional and Administrative Law &mdash; Roger Masterman &amp; Colin R. G. Murray (2nd ed.)</a>
+    <section class="mb-14 text-left">
+      <h3 class="text-xl font-semibold mb-5 pl-3 border-l-4 border-emerald-500">Public</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+        <div class="flex items-start gap-4 p-4 border border-black/10 dark:border-white/20 rounded-lg hover:shadow-lg hover:-translate-y-0.5 transition">
+          <img src="https://covers.openlibrary.org/b/id/14032564-L.jpg" alt="Cover of Constitutional and Administrative Law" loading="lazy"
+            class="w-20 h-28 object-cover rounded shadow flex-shrink-0 bg-gray-100 dark:bg-gray-800"
+            onerror="this.outerHTML='&lt;div class=&quot;w-20 h-28 flex-shrink-0 rounded shadow bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-3xl&quot;&gt;📘&lt;/div&gt;'">
+          <div class="flex-1 flex flex-col min-h-28">
+            <h4 class="font-semibold leading-snug">Constitutional and Administrative Law</h4>
+            <p class="text-sm opacity-70 mb-3">Roger Masterman &amp; Colin R. G. Murray <span class="opacity-60">(2nd ed.)</span></p>
+            <a href="https://pub-7d14748e2eb2471097bca3aa61d93ca7.r2.dev/Law%20Textbooks/Public/Constitutional%20and%20Administrative%20Law%20-%20Roger%20Masterman%2C%20Colin%20R%20G%20Murray%20-%202nd%20New%20edition%20PT-%202018.pdf" class="mt-auto inline-flex items-center gap-1 px-4 py-2 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition text-sm self-start">Open PDF →</a>
+          </div>
+        </div>
+
       </div>
-    </div>
+    </section>
 
     <!-- Criminal -->
-    <div class="mb-10">
-      <h3 class="text-2xl font-semibold mb-4">Criminal</h3>
-      <div class="grid grid-cols-1 gap-4">
-        <a href="https://pub-7d14748e2eb2471097bca3aa61d93ca7.r2.dev/Law%20Textbooks/Criminal/Smith%2C%20Hogan%2C%20and%20Ormerod's%20Essentials%20of%20Criminal%20Law%20-%20John%20Child%3B%20Q%20C%20Ormerod%3B%20J%20C%20Smith%20-%20Fourth%20edition%2C%20Oxford%2C%20United%20Kingdom%2C%202021.pdf" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">Smith, Hogan, and Ormerod's Essentials of Criminal Law &mdash; John Child, David Ormerod &amp; J. C. Smith (4th ed.)</a>
+    <section class="mb-14 text-left">
+      <h3 class="text-xl font-semibold mb-5 pl-3 border-l-4 border-red-500">Criminal</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+        <div class="flex items-start gap-4 p-4 border border-black/10 dark:border-white/20 rounded-lg hover:shadow-lg hover:-translate-y-0.5 transition">
+          <img src="https://covers.openlibrary.org/b/id/8876993-L.jpg" alt="Cover of Smith, Hogan, and Ormerod's Essentials of Criminal Law" loading="lazy"
+            class="w-20 h-28 object-cover rounded shadow flex-shrink-0 bg-gray-100 dark:bg-gray-800"
+            onerror="this.outerHTML='&lt;div class=&quot;w-20 h-28 flex-shrink-0 rounded shadow bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-3xl&quot;&gt;📘&lt;/div&gt;'">
+          <div class="flex-1 flex flex-col min-h-28">
+            <h4 class="font-semibold leading-snug">Smith, Hogan, and Ormerod's Essentials of Criminal Law</h4>
+            <p class="text-sm opacity-70 mb-3">John Child, David Ormerod &amp; J. C. Smith <span class="opacity-60">(4th ed.)</span></p>
+            <a href="https://pub-7d14748e2eb2471097bca3aa61d93ca7.r2.dev/Law%20Textbooks/Criminal/Smith%2C%20Hogan%2C%20and%20Ormerod's%20Essentials%20of%20Criminal%20Law%20-%20John%20Child%3B%20Q%20C%20Ormerod%3B%20J%20C%20Smith%20-%20Fourth%20edition%2C%20Oxford%2C%20United%20Kingdom%2C%202021.pdf" class="mt-auto inline-flex items-center gap-1 px-4 py-2 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition text-sm self-start">Open PDF →</a>
+          </div>
+        </div>
+
       </div>
-    </div>
+    </section>
 
     <!-- Property -->
-    <div class="mb-10">
-      <h3 class="text-2xl font-semibold mb-4">Property</h3>
-      <div class="grid grid-cols-1 gap-4">
-        <a href="https://pub-7d14748e2eb2471097bca3aa61d93ca7.r2.dev/Law%20Textbooks/Property/Modern%20Land%20Law.pdf" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">Modern Land Law</a>
-        <a href="https://pub-7d14748e2eb2471097bca3aa61d93ca7.r2.dev/Law%20Textbooks/Property/Trusts%20and%20Equity%20-%20Watt%2C%20Gary%2C%20author%20-%20Eighth%20edition%20.pdf" class="px-6 py-3 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">Trusts and Equity &mdash; Gary Watt (8th ed.)</a>
+    <section class="mb-6 text-left">
+      <h3 class="text-xl font-semibold mb-5 pl-3 border-l-4 border-amber-500">Property</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+        <div class="flex items-start gap-4 p-4 border border-black/10 dark:border-white/20 rounded-lg hover:shadow-lg hover:-translate-y-0.5 transition">
+          <img src="https://covers.openlibrary.org/b/id/10000848-L.jpg" alt="Cover of Modern Land Law" loading="lazy"
+            class="w-20 h-28 object-cover rounded shadow flex-shrink-0 bg-gray-100 dark:bg-gray-800"
+            onerror="this.outerHTML='&lt;div class=&quot;w-20 h-28 flex-shrink-0 rounded shadow bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-3xl&quot;&gt;📘&lt;/div&gt;'">
+          <div class="flex-1 flex flex-col min-h-28">
+            <h4 class="font-semibold leading-snug">Modern Land Law</h4>
+            <p class="text-sm opacity-70 mb-3">&nbsp;</p>
+            <a href="https://pub-7d14748e2eb2471097bca3aa61d93ca7.r2.dev/Law%20Textbooks/Property/Modern%20Land%20Law.pdf" class="mt-auto inline-flex items-center gap-1 px-4 py-2 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition text-sm self-start">Open PDF →</a>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4 p-4 border border-black/10 dark:border-white/20 rounded-lg hover:shadow-lg hover:-translate-y-0.5 transition">
+          <img src="https://covers.openlibrary.org/b/id/1136787-L.jpg" alt="Cover of Trusts and Equity" loading="lazy"
+            class="w-20 h-28 object-cover rounded shadow flex-shrink-0 bg-gray-100 dark:bg-gray-800"
+            onerror="this.outerHTML='&lt;div class=&quot;w-20 h-28 flex-shrink-0 rounded shadow bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-3xl&quot;&gt;📘&lt;/div&gt;'">
+          <div class="flex-1 flex flex-col min-h-28">
+            <h4 class="font-semibold leading-snug">Trusts and Equity</h4>
+            <p class="text-sm opacity-70 mb-3">Gary Watt <span class="opacity-60">(8th ed.)</span></p>
+            <a href="https://pub-7d14748e2eb2471097bca3aa61d93ca7.r2.dev/Law%20Textbooks/Property/Trusts%20and%20Equity%20-%20Watt%2C%20Gary%2C%20author%20-%20Eighth%20edition%20.pdf" class="mt-auto inline-flex items-center gap-1 px-4 py-2 border border-black dark:border-white rounded-lg shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition text-sm self-start">Open PDF →</a>
+          </div>
+        </div>
+
       </div>
-    </div>
+    </section>
+
   </div>
 
   <div class="fixed bottom-4 left-4 text-sm">
-    <small>We are constantly adding new subjects and content.</small>
+    <small>Don't ask me, I ain't a lawyer.</small>
   </div>
 </body>
 </html>
